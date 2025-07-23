@@ -1,6 +1,7 @@
 //IMPORTAÇÕES
 
 import classes.SistemaOperacional;
+import classes.Processos;
 import utils.Prompts;
 
 
@@ -15,7 +16,16 @@ public class Main{
 		Prompts.prompt_add_recurso(so);
 		System.out.println(so.get_recursos());
 		System.out.println(so.get_recursos_id());
+		System.out.println(so.get_recursos_quantidade_instancias());
 
+		Processos p1=new Processos();
+	
+		p1.set_sistemaOperacional(so);	
+		
+		System.out.println(p1.add_recurso_necessario(2));
+		
+		System.out.println(p1.get_recursos_necessarios());
+		
 
 	}	
 }
