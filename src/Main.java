@@ -3,6 +3,7 @@
 import classes.SistemaOperacional;
 import classes.Processos;
 import classes.SistemaOperacional_rodando;
+import classes.Processo_rodando;
 import utils.Prompts;
 import utils.Utils;
 import java.util.ArrayList;
@@ -34,31 +35,28 @@ public class Main{
 		p1.add_recurso_necessario(3);
 		p1.add_recurso_necessario(2);
 		
-		//System.out.println("recursos necessarios p1:");
-		//System.out.println(p1.get_recursos_necessarios());
 
 		p2.add_recurso_necessario(1);
 		p2.add_recurso_necessario(3);
 		p2.add_recurso_necessario(2);
 		
-		//System.out.println("recursos necessarios p2:");
-		//System.out.println(p2.get_recursos_necessarios());
 
 		p3.add_recurso_necessario(1);
 		p3.add_recurso_necessario(2);
 		p3.add_recurso_necessario(2);
-				
-		//System.out.println("recursos necessarios p3:");
-		//System.out.println(p3.get_recursos_necessarios());
 
-		ArrayList<Processos> processos=new ArrayList<>();
-		processos.add(p1);
-		processos.add(p2);
-		processos.add(p3);
+		Processo_rodando processo1=new Processo_rodando(p1,5,5);		
+		Processo_rodando processo2=new Processo_rodando(p2,5,5);		
+		Processo_rodando processo3=new Processo_rodando(p2,5,5);		
+
+			
+
+		ArrayList<Processo_rodando> processos=new ArrayList<>();
+		processos.add(processo1);
+		processos.add(processo2);
+		processos.add(processo3);
 		
-		SistemaOperacional_rodando sistemaOperacional_rodando=new SistemaOperacional_rodando();	
-		sistemaOperacional_rodando.sistemaOperacional=so;
-		sistemaOperacional_rodando.processos=processos;
+		SistemaOperacional_rodando sistemaOperacional_rodando=new SistemaOperacional_rodando(so,processos);	
 
 		sistemaOperacional_rodando.printar_tela();
 
@@ -66,6 +64,5 @@ public class Main{
 
 
 
-
 	}	
-}
+} 

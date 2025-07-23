@@ -4,6 +4,8 @@ package classes;
 
 import java.util.ArrayList;
 
+
+
 public class Processos{
 	public int processo_id; //indetificador do processo
 	public ArrayList<Integer> recursos_necessarios=new ArrayList<>();
