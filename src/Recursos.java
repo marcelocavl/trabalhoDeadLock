@@ -1,8 +1,8 @@
 
 public class Recursos {
     private final int id;
-    private String nome;
-    private int quantidade;
+    private final String nome;
+    private final int quantidade;
 
     public Recursos(int id, String nome, int quantidade){
         this.id = id;
