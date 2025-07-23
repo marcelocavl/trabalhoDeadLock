@@ -1,11 +1,17 @@
 
 //IMPORTAÇÕES
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 //CLASSE SISTEMA OPERACIONAL
 public class SistemaOperacional{
 	//ATRIBUTOS
+
+	// A capacidade máxima de cada arraylist deve ser a quantidade de tipos de recurso
+	// para isso, ao invés de arraylist, deve ser usado somente array
+
 	public ArrayList<Recursos> recursos = new ArrayList<>();
+	public ArrayList<Semaphore> semaphores = new ArrayList<>();
 
 	//METODOS
 	//metodos gets
@@ -23,8 +29,10 @@ public class SistemaOperacional{
 	}
 
 	//metodos add
-	public boolean add_recursos(Recursos recurso){
-		return this.get_recursos().add(recurso);
+	public void add_recursos(ArrayList<Recursos> recursos){
+		for (int i = 0; i < recursos.size(); i++){
+			this.get_recursos().add(recursos.get(i));
+		}
 	}
 
 	//metodos de decremento de quantidade de instancia de um recurso
