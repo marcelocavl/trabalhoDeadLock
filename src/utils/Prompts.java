@@ -39,18 +39,5 @@ public class Prompts{
 		}
 
 	}	
-/*
-	public static void prompt_add_mais_um_recurso(SistemaOperacional so){
-		Scanner scanner=new Scanner(System.in);//instanceia classe para ler entrada do user
-		System.out.println("Deseja adicionar mais um recurso[y/n]?");
-		String resposta=scanner.nextLine();
 
-		if(resposta=="y"){
-			prompt_add_recurso(so);
-		}else{
-			return;
-		}
-
-	}
-*/
 }

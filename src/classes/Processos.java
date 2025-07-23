@@ -63,7 +63,6 @@ public class Processos{
 		//ArrayList<Integer> processo_recursos_necessarios=this.get_recursos_necessarios();
 		ArrayList<Integer> sistemaOperacional_quantidade_de_instancias_dos_recursos=this.retorna_quantidade_de_instancias_dos_recursos_do_sistemaOperacional();
 		int ultimo_indice=this.get_recursos_necessarios().size();	
-		System.out.println(ultimo_indice);
 	
 		//comparando se o nu
 		if(quantidade_de_instancias_necessarias_do_recurso>sistemaOperacional_quantidade_de_instancias_dos_recursos.get(ultimo_indice)){
