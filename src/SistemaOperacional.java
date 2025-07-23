@@ -1,6 +1,7 @@
 
 //IMPORTAÇÕES
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 //CLASSE SISTEMA OPERACIONAL
@@ -9,9 +10,14 @@ public class SistemaOperacional{
 
 	// A capacidade máxima de cada arraylist deve ser a quantidade de tipos de recurso
 	// para isso, ao invés de arraylist, deve ser usado somente array
-
 	public ArrayList<Recursos> recursos = new ArrayList<>();
 	public ArrayList<Semaphore> semaphores = new ArrayList<>();
+	private final ArrayList<Processos> processos = new ArrayList<>();
+	private static SistemaInterface interfaceGrafica;
+
+    public SistemaOperacional(SistemaInterface ui, int intervaloVerificacaoSegundos) {
+        SistemaOperacional.interfaceGrafica = ui;
+    }
 
 	//METODOS
 	//metodos gets
@@ -34,6 +40,10 @@ public class SistemaOperacional{
 			this.get_recursos().add(recursos.get(i));
 		}
 	}
+    public void add_processos(Processos p) {
+        processos.add(p);
+    }
+
 
 	//metodos de decremento de quantidade de instancia de um recurso
 	public boolean remove_uma_instancia_recurso(Recursos recurso){	
@@ -55,5 +65,18 @@ public class SistemaOperacional{
 		return this.get_recursos().contains(recursos);
 	}
 
+	public void atualizarInterface() {
+    interfaceGrafica.atualizarRecursos(recursos);
+    interfaceGrafica.atualizarProcessos(processos);
+}
+	//sorteio aleatorio do recursp
+	public Recursos sortearRecursoAleatorio() {
+		Random rand = new Random();
+		return recursos.get(rand.nextInt(recursos.size()));
+	}
+	public SistemaInterface getInterface() {
+    	return interfaceGrafica;
+}
+	
 }
 

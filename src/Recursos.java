@@ -2,12 +2,14 @@
 public class Recursos {
     private final int id;
     private final String nome;
-    private final int quantidade;
+    private final int total;
+    private int disponivel;
 
     public Recursos(int id, String nome, int quantidade){
         this.id = id;
         this.nome = nome;
-        this.quantidade = quantidade;
+        this.total = quantidade;
+        this.disponivel = quantidade;
     }
 
     public int getId() {
@@ -18,19 +20,35 @@ public class Recursos {
         return nome;
     }
 
-    public int getQuantidade() {
-        return quantidade;
+
+    public int getTotal() {
+        return total;
+    }
+
+    public int getDisponivel() {
+        return disponivel;
+    }
+
+    public void alocar() {
+        if (disponivel > 0) {
+            disponivel--;
+        }
+    }
+
+    public void liberar() {
+        if (disponivel < total) {
+            disponivel++;
+        }
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Recursos{");
-        sb.append("id=").append(id);
-        sb.append(", nome=").append(nome);
-        sb.append(", quantidade=").append(quantidade);
-        sb.append('}');
-        return sb.toString();
+        return "Recursos{" +
+               "id=" + id +
+               ", nome='" + nome + '\'' +
+               ", total=" + total +
+               ", disponivel=" + disponivel +
+               '}';
     }
 
     

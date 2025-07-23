@@ -7,9 +7,10 @@ import java.util.ArrayList;
 
 public class Main{
 	public static void main(String args[]){	
-		SistemaOperacional so = new SistemaOperacional();
 
 		SistemaInterface tela = new SistemaInterface();
+		SistemaOperacional so = new SistemaOperacional(tela, 5);
+		tela.setSistema(so);
 
 		AddRecursosDialog dialog = new AddRecursosDialog(tela);
         dialog.setVisible(true);
@@ -23,10 +24,13 @@ public class Main{
 
 			so.add_recursos(recursos);
 
-			for (int i = 0; i < recursos.size(); i++){
-				tela.addLog("SO adicionou recurso: " + recursos.get(i).getNome() + " ID (" + recursos.get(i).getId() + ") " + ", quantidade: " + recursos.get(i).getQuantidade());
-				tela.addRecursoRow(recursos.get(i).getNome(),  recursos.get(i).getQuantidade());
-			}
+			for (int i = 0; i < recursos.size(); i++) {
+   				 Recursos r = recursos.get(i);
+   				tela.addLog("SO adicionou recurso: " + r.getNome() + 
+                " ID (" + r.getId() + "), total: " + r.getTotal() + 
+                ", disponível: " + r.getDisponivel());
+    			tela.addRecursoRow(r.getNome(), r.getDisponivel()); 
+}
 
             tela.setVisible(true);
         } else {

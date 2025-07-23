@@ -1,10 +1,11 @@
 import java.awt.*;
 import javax.swing.*;
 
-public class AddProcessoDialog extends JDialog{
+public class AddProcessoDialog extends JDialog {
     private JTextField idField;
     private JTextField tempo_solicitacao_field;
     private JTextField tempo_utilizacao_field;
+    private boolean confirmado = false;
 
     public AddProcessoDialog(SistemaInterface parent) {
         super(parent, "Adicionar Processo", true);
@@ -23,9 +24,9 @@ public class AddProcessoDialog extends JDialog{
 
         camposPanel.add(new JLabel("ID do Processo:"));
         camposPanel.add(idField);
-        camposPanel.add(new JLabel("Tempo de solicitação do Processo:"));
+        camposPanel.add(new JLabel("Tempo de solicitação do Processo (ΔTs):"));
         camposPanel.add(tempo_solicitacao_field);
-        camposPanel.add(new JLabel("Tempo de utilização do Processo:"));
+        camposPanel.add(new JLabel("Tempo de utilização do Processo (ΔTu):"));
         camposPanel.add(tempo_utilizacao_field);
 
         JPanel botaoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -35,12 +36,8 @@ public class AddProcessoDialog extends JDialog{
 
         addProcessoButton.addActionListener(e -> {
             if (validarCampos()) {
-                int id = Integer.parseInt(idField.getText().trim());
-                float tempo_solicitacao = Float.parseFloat(tempo_solicitacao_field.getText().trim());
-                float tempo_utilizacao = Float.parseFloat(tempo_utilizacao_field.getText().trim());
-
-                parent.addProcessoRow(id, tempo_solicitacao, tempo_utilizacao);
-                this.dispose();
+                confirmado = true;
+                this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(this, "Preencha todos os campos corretamente.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
@@ -55,17 +52,32 @@ public class AddProcessoDialog extends JDialog{
     }
 
     private boolean validarCampos() {
-        return !idField.getText().trim().isEmpty()
-            && tempoValido();
+        return !idField.getText().trim().isEmpty() && tempoValido();
     }
 
     private boolean tempoValido() {
         try {
-            Float.valueOf(tempo_solicitacao_field.getText().trim());
-            Float.valueOf(tempo_utilizacao_field.getText().trim());
+            Float.parseFloat(tempo_solicitacao_field.getText().trim());
+            Float.parseFloat(tempo_utilizacao_field.getText().trim());
             return true;
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public boolean isConfirmed() {
+        return confirmado;
+    }
+
+    public int getId() {
+        return Integer.parseInt(idField.getText().trim());
+    }
+
+    public float getTempoSolicitacao() {
+        return Float.parseFloat(tempo_solicitacao_field.getText().trim());
+    }
+
+    public float getTempoUtilizacao() {
+        return Float.parseFloat(tempo_utilizacao_field.getText().trim());
     }
 }
