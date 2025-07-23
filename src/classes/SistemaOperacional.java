@@ -26,15 +26,15 @@ public class SistemaOperacional{
 	}
 
 	//metodos add
-	public boolean add_recursos(String recurso){
+	public boolean add_recurso(String recurso){
 		return this.get_recursos().add(recurso);
 	}
 
-	public boolean add_recursos_id(int recurso_id){
+	public boolean add_recurso_id(int recurso_id){
 		return this.get_recursos_id().add(recurso_id);
 	}
 
-	public boolean add_recursos_quantidade_instancias(int quantidade_instancias){
+	public boolean add_recurso_quantidade_instancias(int quantidade_instancias){
 		return this.get_recursos_quantidade_instancias().add(quantidade_instancias);
 	}
 
