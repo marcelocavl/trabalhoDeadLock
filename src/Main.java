@@ -5,7 +5,7 @@ import classes.sistemaOperacional.SistemaOperacional_rodando;
 import classes.sistemaOperacional.Recurso;
 import classes.sistemaOperacional.Recursos;
 
-import classes.processo.Processos;
+import classes.processo.Processo;
 import classes.processo.RecursosNecessarios;
 //import classes.processo.Processo_rodando;
 
@@ -21,6 +21,8 @@ import java.util.ArrayList;
 public class Main{
 	public static void main(String args[]){	
 		
+//----------------------------------------------------------------------------------
+//CRIACAO DO SISTEMA OPERACIONAL
 		Recurso r1=new Recurso("impressora",1,3);
 		Recurso r2=new Recurso("scanner",2,3);
 		Recurso r3=new Recurso("plotter",2,3);
@@ -33,11 +35,42 @@ public class Main{
 		Recursos recursos=new Recursos(recursos_array);
 		
 		SistemaOperacional so=new SistemaOperacional(recursos);
+		
+		System.out.println(so.getRecursos().retorneArrayRecursosNomes());
+		System.out.println(so.getRecursosQuantidade());
 
-		Utils.limparTela();
-		Processos p1=new Processos();
-		Processos p2=new Processos();
-		Processos p3=new Processos();
+//----------------------------------------------------------------------------------
+//CRIACAO DOS PROCESSOS
+//		Utils.limparTela();
+		RecursosNecessarios recursosNecessarios1=new RecursosNecessarios(so);
+		RecursosNecessarios recursosNecessarios2=new RecursosNecessarios(so);
+		RecursosNecessarios recursosNecessarios3=new RecursosNecessarios(so);
+		
+		recursosNecessarios1.addRecursoNecessario(2);
+		recursosNecessarios1.addRecursoNecessario(1);
+		recursosNecessarios1.addRecursoNecessario(3);
+
+		System.out.println(recursosNecessarios1.getRecursosNecessarios());
+
+		recursosNecessarios2.addRecursoNecessario(2);
+		recursosNecessarios2.addRecursoNecessario(1);
+		recursosNecessarios2.addRecursoNecessario(2);
+
+
+		System.out.println(recursosNecessarios2.getRecursosNecessarios());
+
+		recursosNecessarios3.addRecursoNecessario(1);
+		recursosNecessarios3.addRecursoNecessario(1);
+		recursosNecessarios3.addRecursoNecessario(3);
+
+
+
+		System.out.println(recursosNecessarios3.getRecursosNecessarios());
+
+
+		//Processos p1=new Processos(1,);
+		//Processos p2=new Processos();
+		//Processos p3=new Processos();
 /*	
 		p1.set_sistemaOperacional(so);	
 		p2.set_sistemaOperacional(so);	

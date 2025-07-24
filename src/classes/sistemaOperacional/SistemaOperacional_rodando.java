@@ -1,7 +1,7 @@
 package classes.sistemaOperacional;
 
 import classes.processo.Processo_rodando;
-import classes.processo.Processos;
+import classes.processo.Processo;
 
 import utils.Utils;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import java.util.concurrent.Semaphore;
 
 
 public class SistemaOperacional_rodando extends Thread{	
+
 	private SistemaOperacional sistemaOperacional;
 	private ArrayList<Processo_rodando> processos_rodando;
 

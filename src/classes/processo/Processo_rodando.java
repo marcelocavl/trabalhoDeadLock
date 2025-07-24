@@ -7,12 +7,12 @@ import utils.Utils;
 import java.util.ArrayList;
 
 public class Processo_rodando extends Thread{
-	private Processos processo;
+	private Processo processo;
 	private int tempo_de_solicitacao;	
 	private int tempo_de_execucao;
 
 
-	public Processo_rodando(Processos processo,int tempo_de_solicitacao,int tempo_de_execucao){	
+	public Processo_rodando(Processo processo,int tempo_de_solicitacao,int tempo_de_execucao){	
 		this.processo=processo;
 		this.tempo_de_solicitacao=tempo_de_solicitacao;
 		this.tempo_de_execucao=tempo_de_execucao;

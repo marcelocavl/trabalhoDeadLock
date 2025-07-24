@@ -1,45 +1,46 @@
 package classes.sistemaOperacional;
 
 public class Recurso{
-	private String recurso_nome;
-	private int recurso_id;
-	private int recurso_quantidade;
+	private String recursoNome;
+	private int recursoId;
+	private int recursoQuantidade;
+
 		
 	public Recurso(String recurso_nome,int recurso_id,int recurso_quantidade){
-		this.recurso_nome=recurso_nome;
-		this.recurso_id=recurso_id;
-		this.recurso_quantidade=recurso_quantidade;
+		this.recursoNome=recurso_nome;
+		this.recursoId=recurso_id;
+		this.recursoQuantidade=recurso_quantidade;
 	}
 
-	public String getRecurso_nome() {
-		return recurso_nome;
+	public String getRecursoNome() {
+		return this.recursoNome;
 	}
 
-	public int getRecurso_id() {
-    return recurso_id;
+	public int getRecursoId() {
+    return this.recursoId;
 	}
 
-	public int getRecurso_quantidade() {
-    return recurso_quantidade;
+	public int getRecursoQuantidade() {
+    return this.recursoQuantidade;
 	}
 
-	public void setRecurso_id(int recurso_id) {
-    this.recurso_id = recurso_id;
-	}
-
-
-	public void setRecurso_nome(String recurso_nome) {
-    this.recurso_nome = recurso_nome;
+	public void setRecursoId(int recurso_id) {
+    this.recursoId = recurso_id;
 	}
 
 
-	public void setRecurso_quantidade(int recurso_quantidade) {
-    this.recurso_quantidade = recurso_quantidade;
+	public void setRecursoNome(String recurso_nome) {
+    this.recursoNome = recurso_nome;
+	}
+
+
+	public void setRecursoQuantidade(int recurso_quantidade) {
+    this.recursoQuantidade = recurso_quantidade;
 	}
 
 	//METODOS DE DECREMENTO
-	public void recurso_decrementa_quantidade(){
-		this.recurso_quantidade--;
+	public void recursoDecrementaQuantidade(){
+		this.recursoQuantidade--;
 	}
 	
 	

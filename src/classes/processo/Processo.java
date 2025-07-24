@@ -10,10 +10,14 @@ import java.util.ArrayList;
 
 
 
-public class Processos{
+public class Processo{
 	private int processoId; 
 	private RecursosNecessarios recursosNecessarios;
 
+	public Processo(int processoId,RecursosNecessarios recursosNecessarios){
+		this.processoId=processoId;
+		this.recursosNecessarios=recursosNecessarios;	
+	}
 
 	public int getProcessoId(){	
 		return this.processoId;
