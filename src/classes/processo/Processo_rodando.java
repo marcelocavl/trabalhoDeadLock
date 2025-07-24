@@ -98,21 +98,21 @@ public class Processo_rodando extends Thread{
 
 
 	public void subtrair_dos_recursos_disponiveis_so(){
-		ArrayList<Integer> recursos_disponiveis=this.get_sistema_operacional().get_recursos_quantidade_instancias();
+		ArrayList<Integer> recursos_disponiveis=this.get_sistema_operacional().getRecursosQuantidade();
 		ArrayList<Integer> recursos_necessarios=this.get_processo().get_recursos_necessarios();
 		recursos_disponiveis=Utils.subtrair_arrays(recursos_disponiveis,recursos_necessarios);
 		
-		this.get_sistema_operacional().set_recursos_quantidade_instancias(recursos_disponiveis);
+		this.get_sistema_operacional().setRecursosQuantidade(recursos_disponiveis);
 		
 		
 	}
 
 	public void adicionar_aos_recursos_disponiveis_so(){
-		ArrayList<Integer> recursos_disponiveis=this.get_sistema_operacional().get_recursos_quantidade_instancias();
+		ArrayList<Integer> recursos_disponiveis=this.get_sistema_operacional().getRecursosQuantidade();
 		ArrayList<Integer> recursos_necessarios=this.get_processo().get_recursos_necessarios();
 		recursos_disponiveis=Utils.adicionar_arrays(recursos_disponiveis,recursos_necessarios);
 		
-		this.get_sistema_operacional().set_recursos_quantidade_instancias(recursos_disponiveis);
+		this.get_sistema_operacional().setRecursosQuantidade(recursos_disponiveis);
 		
 		
 	}

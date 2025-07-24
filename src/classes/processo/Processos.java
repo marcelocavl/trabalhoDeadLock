@@ -3,6 +3,8 @@
 package classes.processo;
 
 import classes.sistemaOperacional.SistemaOperacional;
+import classes.sistemaOperacional.Recursos;
+import classes.sistemaOperacional.Recurso;
 
 import java.util.ArrayList;
 
@@ -44,11 +46,13 @@ public class Processos{
 		this.sistemaOperacional=sistemaOperacional;
 		return true;
 	}
+
 	//metodos para interagir com o sistema operacional
 	public ArrayList<Integer> retorna_quantidade_de_instancias_dos_recursos_do_sistemaOperacional(){
-		return this.get_sistemaOperacional().get_recursos_quantidade_instancias();
+		return this.get_sistemaOperacional().getRecursosQuantidade();
 	}	
-	public ArrayList<String> retorna_recursos_do_sistemaOperacional(){
+
+	public Recursos retorna_recursos_do_sistemaOperacional(){
 		return this.get_sistemaOperacional().get_recursos();
 	}	
 

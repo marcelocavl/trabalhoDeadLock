@@ -2,8 +2,12 @@
 
 import classes.sistemaOperacional.SistemaOperacional;
 import classes.sistemaOperacional.SistemaOperacional_rodando;
+import classes.sistemaOperacional.Recurso;
+import classes.sistemaOperacional.Recursos;
+
 import classes.processo.Processos;
 import classes.processo.Processo_rodando;
+
 
 import utils.Prompts;
 import utils.Utils;
@@ -15,14 +19,19 @@ import java.util.ArrayList;
 //CLASSE MAIN
 public class Main{
 	public static void main(String args[]){	
-
-		SistemaOperacional so=new SistemaOperacional();
-
-		Prompts.ola_usuario();
-		Prompts.prompt_add_recurso(so);
-		System.out.println(so.get_recursos());
-		System.out.println(so.get_recursos_id());
-		System.out.println(so.get_recursos_quantidade_instancias());
+		
+		Recurso r1=new Recurso("impressora",1,3);
+		Recurso r2=new Recurso("scanner",2,3);
+		Recurso r3=new Recurso("plotter",2,3);
+	
+		ArrayList<Recurso> recursos_array=new ArrayList<>();
+		recursos_array.add(r1);		
+		recursos_array.add(r2);		
+		recursos_array.add(r3);		
+		
+		Recursos recursos=new Recursos(recursos_array);
+		
+		SistemaOperacional so=new SistemaOperacional(recursos);
 
 		Utils.limparTela();
 		Processos p1=new Processos();

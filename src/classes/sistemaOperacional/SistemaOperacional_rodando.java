@@ -52,7 +52,7 @@ public class SistemaOperacional_rodando extends Thread{
 			Processos processo_de_processo_rodando=processo_rodando.get_processo();
 			System.out.println("p"+i+" "+processo_de_processo_rodando.get_recursos_necessarios());
 		}
-		System.out.println("recursos do sistema operacional: "+this.sistemaOperacional.get_recursos());
-		System.out.println("quantidade de cada recurso: "+this.sistemaOperacional.get_recursos_quantidade_instancias());
+		System.out.println("recursos do sistema operacional: "+this.get_sistemaOperacional().get_recursos());
+		System.out.println("quantidade de cada recurso: "+this.get_sistemaOperacional().getRecursosQuantidade());
 	}
 }
