@@ -1,4 +1,7 @@
-package classes;
+package classes.sistemaOperacional;
+
+import classes.processo.Processo_rodando;
+import classes.processo.Processos;
 
 import utils.Utils;
 import java.util.ArrayList;

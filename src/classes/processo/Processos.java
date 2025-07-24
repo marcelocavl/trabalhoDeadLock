@@ -1,6 +1,8 @@
 //CLASSE PROCESOS
 
-package classes;
+package classes.processo;
+
+import classes.sistemaOperacional.SistemaOperacional;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package classes;
+package classes.sincronizacao;
 
 import java.util.concurrent.Semaphore;
 

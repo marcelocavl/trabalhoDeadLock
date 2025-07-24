@@ -1,11 +1,13 @@
 //IMPORTAÇÕES
 
-import classes.SistemaOperacional;
-import classes.Processos;
-import classes.SistemaOperacional_rodando;
-import classes.Processo_rodando;
+import classes.sistemaOperacional.SistemaOperacional;
+import classes.sistemaOperacional.SistemaOperacional_rodando;
+import classes.processo.Processos;
+import classes.processo.Processo_rodando;
+
 import utils.Prompts;
 import utils.Utils;
+
 import java.util.ArrayList;
 
 

@@ -1,7 +1,8 @@
 package utils;
 
 //IMPORTAÇÕES
-import classes.SistemaOperacional;
+import classes.sistemaOperacional.SistemaOperacional;
+
 import java.util.Scanner;
 
 public class Prompts{

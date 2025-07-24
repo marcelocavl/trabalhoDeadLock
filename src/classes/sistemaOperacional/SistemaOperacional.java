@@ -1,7 +1,9 @@
 //EMPACOTAMENTO
-package classes;
+package classes.sistemaOperacional;
 
 //IMPORTAÇÕES
+import classes.processo.Processos;
+
 import java.util.ArrayList;
 
 //CLASSE SISTEMA OPERACIONAL

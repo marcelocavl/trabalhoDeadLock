@@ -1,4 +1,7 @@
-package classes;
+package classes.processo;
+
+import classes.sistemaOperacional.SistemaOperacional; 
+import classes.sincronizacao.Semaphores;
 
 import utils.Utils;
 import java.util.ArrayList;
