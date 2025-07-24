@@ -19,7 +19,7 @@ public class Processo_rodando extends Thread{
 		return;
 	}
 
-
+/*
 	public void run(){
 		while(true){
 			this.intervalo_de_solicitacao();	
@@ -42,7 +42,7 @@ public class Processo_rodando extends Thread{
 	}
 
 	public SistemaOperacional get_sistema_operacional(){
-		return this.get_processo().get_sistemaOperacional();
+		return this.get_processo().getSistemaOperacional();
 	}
 		
 
@@ -96,20 +96,18 @@ public class Processo_rodando extends Thread{
 		
 	}
 
-
 	public void subtrair_dos_recursos_disponiveis_so(){
 		ArrayList<Integer> recursos_disponiveis=this.get_sistema_operacional().getRecursosQuantidade();
-		ArrayList<Integer> recursos_necessarios=this.get_processo().get_recursos_necessarios();
-		recursos_disponiveis=Utils.subtrair_arrays(recursos_disponiveis,recursos_necessarios);
+		RecursosNecessarios recursosNecessarios=this.get_processo().getRecursosNecessarios();
+		recursos_disponiveis=Utils.subtrair_arrays(recursos_disponiveis,recursosNecessarios);
 		
 		this.get_sistema_operacional().setRecursosQuantidade(recursos_disponiveis);
-		
 		
 	}
 
 	public void adicionar_aos_recursos_disponiveis_so(){
 		ArrayList<Integer> recursos_disponiveis=this.get_sistema_operacional().getRecursosQuantidade();
-		ArrayList<Integer> recursos_necessarios=this.get_processo().get_recursos_necessarios();
+		ArrayList<Integer> recursos_necessarios=this.get_processo().getRecursosNecessarios();
 		recursos_disponiveis=Utils.adicionar_arrays(recursos_disponiveis,recursos_necessarios);
 		
 		this.get_sistema_operacional().setRecursosQuantidade(recursos_disponiveis);
@@ -117,6 +115,7 @@ public class Processo_rodando extends Thread{
 		
 	}
 
+*/		
 
 
 }

@@ -44,15 +44,16 @@ public class SistemaOperacional_rodando extends Thread{
 		this.processos_rodando=processos_rodando;
 		return true;
 	}
-
+/*
 	public void printar_tela(){
 		int i;
 		for(i=0;i<this.get_processos_rodando().size();i++){
 			Processo_rodando processo_rodando=this.get_processos_rodando().get(i);
 			Processos processo_de_processo_rodando=processo_rodando.get_processo();
-			System.out.println("p"+i+" "+processo_de_processo_rodando.get_recursos_necessarios());
+			System.out.println("p"+i+" "+processo_de_processo_rodando.getRecursosNecessarios());
 		}
 		System.out.println("recursos do sistema operacional: "+this.get_sistemaOperacional().get_recursos());
 		System.out.println("quantidade de cada recurso: "+this.get_sistemaOperacional().getRecursosQuantidade());
 	}
+*/
 }

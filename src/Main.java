@@ -6,7 +6,8 @@ import classes.sistemaOperacional.Recurso;
 import classes.sistemaOperacional.Recursos;
 
 import classes.processo.Processos;
-import classes.processo.Processo_rodando;
+import classes.processo.RecursosNecessarios;
+//import classes.processo.Processo_rodando;
 
 
 import utils.Prompts;
@@ -37,7 +38,7 @@ public class Main{
 		Processos p1=new Processos();
 		Processos p2=new Processos();
 		Processos p3=new Processos();
-	
+/*	
 		p1.set_sistemaOperacional(so);	
 		p2.set_sistemaOperacional(so);	
 		p3.set_sistemaOperacional(so);	
@@ -59,7 +60,6 @@ public class Main{
 		Processo_rodando processo1=new Processo_rodando(p1,5,5);		
 		Processo_rodando processo2=new Processo_rodando(p2,5,5);		
 		Processo_rodando processo3=new Processo_rodando(p2,5,5);		
-
 			
 
 		ArrayList<Processo_rodando> processos=new ArrayList<>();
@@ -71,6 +71,7 @@ public class Main{
 
 		sistemaOperacional_rodando.printar_tela();
 
+*/
 
 
 
