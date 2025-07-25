@@ -1,15 +1,17 @@
-package classes.sistemaOperacional;
+package classes.recurso;
+
+import java.util.concurrent.Semaphore;
 
 public class Recurso{
 	private String recursoNome;
 	private int recursoId;
-	private int recursoQuantidade;
+	private Semaphore recursoQuantidade;
 
 		
 	public Recurso(String recurso_nome,int recurso_id,int recurso_quantidade){
 		this.recursoNome=recurso_nome;
 		this.recursoId=recurso_id;
-		this.recursoQuantidade=recurso_quantidade;
+		this.recursoQuantidade=new Semaphore(recurso_quantidade);
 	}
 
 	public String getRecursoNome() {
@@ -20,7 +22,7 @@ public class Recurso{
     return this.recursoId;
 	}
 
-	public int getRecursoQuantidade() {
+	public Semaphore getRecursoQuantidade() {
     return this.recursoQuantidade;
 	}
 
@@ -34,15 +36,16 @@ public class Recurso{
 	}
 
 
-	public void setRecursoQuantidade(int recurso_quantidade) {
+	public void setRecursoQuantidade(Semaphore recurso_quantidade) {
     this.recursoQuantidade = recurso_quantidade;
 	}
 
 	//METODOS DE DECREMENTO
+/*
 	public void recursoDecrementaQuantidade(){
 		this.recursoQuantidade--;
 	}
-	
+*/	
 	
 
 }

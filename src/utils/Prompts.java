@@ -2,8 +2,8 @@ package utils;
 
 //IMPORTAÇÕES
 import classes.sistemaOperacional.SistemaOperacional;
-import classes.sistemaOperacional.Recurso;
-import classes.sistemaOperacional.Recursos;
+import classes.recurso.Recurso;
+import classes.recurso.Recursos;
 
 import java.util.Scanner;
 import java.util.ArrayList;

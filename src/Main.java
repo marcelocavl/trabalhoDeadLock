@@ -2,18 +2,19 @@
 
 import classes.sistemaOperacional.SistemaOperacional;
 import classes.sistemaOperacional.SistemaOperacional_rodando;
-import classes.sistemaOperacional.Recurso;
-import classes.sistemaOperacional.Recursos;
+
+import classes.recurso.Recurso;
+import classes.recurso.Recursos;
 
 import classes.processo.Processo;
 import classes.processo.RecursosNecessarios;
-//import classes.processo.Processo_rodando;
 
 
 import utils.Prompts;
 import utils.Utils;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 
 
@@ -67,10 +68,21 @@ public class Main{
 
 		System.out.println(recursosNecessarios3.getRecursosNecessarios());
 
+		Processo p1=new Processo(1,recursosNecessarios1);
+		Processo p2=new Processo(2,recursosNecessarios2);
+		Processo p3=new Processo(3,recursosNecessarios3);
+	
+		ArrayList<Processo> processos=new ArrayList<>();
+		processos.add(p1);
+		processos.add(p2);
+		processos.add(p3);
+	
+		so.setProcessos(processos);			
 
-		//Processos p1=new Processos(1,);
-		//Processos p2=new Processos();
-		//Processos p3=new Processos();
+		so.start();
+		
+
+
 /*	
 		p1.set_sistemaOperacional(so);	
 		p2.set_sistemaOperacional(so);	

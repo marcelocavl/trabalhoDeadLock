@@ -1,6 +1,7 @@
-package classes.sistemaOperacional;
+package classes.recurso;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 public class Recursos{
 	private ArrayList<Recurso> recursos;
@@ -54,8 +55,8 @@ public class Recursos{
 
 	}
 
-	public ArrayList<Integer> retorneArrayRecursosQuantidade(){
-		ArrayList<Integer> recursos_quantidade=new ArrayList<>();
+	public ArrayList<Semaphore> retorneArrayRecursosQuantidade(){
+		ArrayList<Semaphore> recursos_quantidade=new ArrayList<>();
 		int i;
 		for (i=0;i<this.getRecursosQuantidade();i++){	
 			Recurso recursoatual=this.retorneRecursosPorIndice(i);
@@ -65,16 +66,17 @@ public class Recursos{
 	}
 
 	//METODOS DE REMOCAO
+/*
 	public boolean recursosDecrementaQuant(String recurso){
 		int indice_recurso=this.retornaIndiceDoRecurso(recurso);		
 		this.getRecursos().get(indice_recurso).recursoDecrementaQuantidade();
 		return true;
 	}		
-
+*/
 	public int retornaIndiceDoRecurso(String recurso){
 		return this.getRecursos().indexOf(recurso);
 	}
-
+/*
 	public boolean atualizarRecursosQuantidade(ArrayList<Integer> recursosQuantidade){
 		int i;
 		Recurso recursoAtual;
@@ -86,5 +88,5 @@ public class Recursos{
 		}
 		return true;
 	}
-
+*/
 }

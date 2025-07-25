@@ -3,6 +3,7 @@ package classes.processo;
 import classes.sistemaOperacional.SistemaOperacional;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 public class RecursosNecessarios{
 	private ArrayList<Integer> recursosNecessarios;
@@ -38,16 +39,16 @@ public class RecursosNecessarios{
 	}
 
 public boolean isRecursoSuperiorIncompativel(int recursoNecessarioQuantidade){	
-		ArrayList<Integer> sistemaOperacionalRecursosDisponiveis=this.retornaRecursosDisponiveisSistemaOperacional();
+		ArrayList<Semaphore> sistemaOperacionalRecursosDisponiveis=this.retornaRecursosDisponiveisSistemaOperacional();
 		int ultimo_indice=this.getRecursosNecessarios().size();	
 		System.out.println(ultimo_indice);	
-		if(recursoNecessarioQuantidade>sistemaOperacionalRecursosDisponiveis.get(ultimo_indice)){
+		if(recursoNecessarioQuantidade>sistemaOperacionalRecursosDisponiveis.get(ultimo_indice).availablePermits()){
 			return true;
 		}
 		return false;
 	}
 
-	public ArrayList<Integer> retornaRecursosDisponiveisSistemaOperacional(){
+	public ArrayList<Semaphore> retornaRecursosDisponiveisSistemaOperacional(){
 		return this.getSo().getRecursosQuantidade();
 	}	
 //----------------------------------------------------------------------------------
