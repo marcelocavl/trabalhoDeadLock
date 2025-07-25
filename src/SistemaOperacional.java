@@ -24,7 +24,10 @@ public class SistemaOperacional{
 	public ArrayList<Recursos> get_recursos(){
 		return this.recursos;
 	}
-
+	
+	public int get_recursos_size(){
+		return this.get_recursos().size();
+	}
 	public ArrayList<String> get_lista_recursos(){
 		ArrayList<String> lista_recursos = new ArrayList<>();
 
@@ -70,13 +73,59 @@ public class SistemaOperacional{
     interfaceGrafica.atualizarProcessos(processos);
 }
 	//sorteio aleatorio do recursp
+	
+	public int sortearNumero()	{
+		Random rand = new Random();
+		int random=rand.nextInt(get_recursos_size());
+		return random;
+	}
 	public Recursos sortearRecursoAleatorio() {
 		Random rand = new Random();
 		return recursos.get(rand.nextInt(recursos.size()));
 	}
+	public Recursos retornarRecursoPorIndice(int indice) {
+		return recursos.get(indice);
+	}
+
+
 	public SistemaInterface getInterface() {
     	return interfaceGrafica;
 }
+
+	public int retorna_num_processos(){
+		return this.processos.size();
+	}
 	
+	
+	public ArrayList<Processos> getArrayProcessos(){
+		return this.processos;
+	}
+	public Processos retornarProcessoIndice(int indice){		
+		return this.getArrayProcessos().get(indice);
+	}
+
+	public ArrayList<Integer> retorna_vetor_alocados_processo_indice(int indice){
+		return this.retornarProcessoIndice(indice).get_recursos_alocados();
+	}
+
+	public void gerar_matriz_recursos_alocados(){
+		int num_recursos=get_recursos_size();
+		int num_processos=retorna_num_processos();
+		
+		int [][] matriz_alocados=new int[num_recursos][num_processos];
+		int i,j;	
+		for(i=0;i<num_processos;i++){
+			ArrayList<Integer> vetorAlocadosProcesso=retorna_vetor_alocados_processo_indice(i);
+			for(j=0;j<num_recursos;j++){	
+				matriz_alocados[i][j]=vetorAlocadosProcesso.get(j);
+			}
+		}
+		this.printar_matriz_recursos_alocados
+	}
+/*
+	public void printar_matriz_recursos_alocados(int[][] matriz,int column,int lines){
+		for(int i=0;i<co
+	}
+*/	
 }
 
