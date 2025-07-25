@@ -14,11 +14,13 @@ import java.util.concurrent.Semaphore;
 //CLASSE SISTEMA OPERACIONAL
 public class SistemaOperacional extends Thread{
 	private Recursos recursos;	
+	private ArrayList<Recurso> recursosReferencia;	
 	private ArrayList<Processo> processos;
 
 	//CONSTRUTOR
 	public SistemaOperacional(Recursos recursos){
 		this.recursos=recursos;
+		this.recursosReferencia=this.getRecursos().getRecursos();
 	}	
 
 	public void run(){
@@ -79,10 +81,17 @@ public class SistemaOperacional extends Thread{
 		int i;
 		for (i=0;i<this.getProcessos().size();i++){	
 			this.getProcessos().get(i).printarRecursosNecessarios();
+			System.out.println(this.getProcessos().get(i).getState());
 		}	
+		System.out.println("recursos disponiveis");
+		this.getRecursos().printRecursos();
+		try{
+			Thread.sleep(3);
+		}catch(InterruptedException e){}
 		Utils.limparTela();
 	}
 	}
+
 /*
 	public boolean setRecursosQuantidade(ArrayList<Integer> recursosQuantidades){
 		return this.getRecursos().atualizarRecursosQuantidade(recursosQuantidades);

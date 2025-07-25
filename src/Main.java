@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
 
-
 //CLASSE MAIN
 public class Main{
 	public static void main(String args[]){	
@@ -47,9 +46,9 @@ public class Main{
 		RecursosNecessarios recursosNecessarios2=new RecursosNecessarios(so);
 		RecursosNecessarios recursosNecessarios3=new RecursosNecessarios(so);
 		
-		recursosNecessarios1.addRecursoNecessario(2);
 		recursosNecessarios1.addRecursoNecessario(1);
-		recursosNecessarios1.addRecursoNecessario(3);
+		recursosNecessarios1.addRecursoNecessario(1);
+		recursosNecessarios1.addRecursoNecessario(1);
 
 		System.out.println(recursosNecessarios1.getRecursosNecessarios());
 
@@ -68,9 +67,9 @@ public class Main{
 
 		System.out.println(recursosNecessarios3.getRecursosNecessarios());
 
-		Processo p1=new Processo(1,recursosNecessarios1);
-		Processo p2=new Processo(2,recursosNecessarios2);
-		Processo p3=new Processo(3,recursosNecessarios3);
+		Processo p1=new Processo(1,recursosNecessarios1,5,5);
+		Processo p2=new Processo(2,recursosNecessarios2,5,5);
+		Processo p3=new Processo(3,recursosNecessarios3,5,5);
 	
 		ArrayList<Processo> processos=new ArrayList<>();
 		processos.add(p1);

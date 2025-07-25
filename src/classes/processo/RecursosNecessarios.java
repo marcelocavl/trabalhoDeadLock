@@ -15,11 +15,12 @@ public class RecursosNecessarios{
 	}
 //----------------------------------------------------------------------------------
 	public ArrayList<Integer> getRecursosNecessarios() {
-    return recursosNecessarios;
+    return this.recursosNecessarios;
 	}
 
+
 	public SistemaOperacional getSo() {
-    return so;
+    return this.so;
 	}
 
 	public void setRecursosNecessarios(ArrayList<Integer> recursosNecessarios) {

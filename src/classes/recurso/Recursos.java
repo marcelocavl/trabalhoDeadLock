@@ -75,6 +75,15 @@ public class Recursos{
 */
 	public int retornaIndiceDoRecurso(String recurso){
 		return this.getRecursos().indexOf(recurso);
+	}	
+		
+
+	public void printRecursos(){
+		ArrayList<Recurso> recursos=this.getRecursos();
+		int i;			
+		for(i=0;i<this.getRecursos().size();i++){
+			System.out.print(recursos.get(i).getRecursoQuantidade()+" ");
+		}
 	}
 /*
 	public boolean atualizarRecursosQuantidade(ArrayList<Integer> recursosQuantidade){

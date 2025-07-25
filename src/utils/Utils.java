@@ -10,6 +10,13 @@ public class Utils{
     System.out.flush();	
 	}
 
+	public static void timer_segs(int segs){
+		long tempoInicial = System.currentTimeMillis();
+  		while (System.currentTimeMillis() - tempoInicial < segs*1000) {
+           // Espera ativa (consome CPU)
+    	}
+	}
+
     public static void down(Semaphore semaforo){
 		try{
 			semaforo.acquire();
@@ -22,6 +29,10 @@ public class Utils{
 	public static void up(Semaphore semaforo){
 		semaforo.release();
 	}
+	public static void up(Semaphore semaforo,int valor){
+		semaforo.release(valor);
+	}
+
 
 	public static ArrayList<Integer> subtrair_arrays(ArrayList<Integer> array1,ArrayList<Integer> array2){
 		int i;
