@@ -46,9 +46,9 @@ public class Main{
 		RecursosNecessarios recursosNecessarios2=new RecursosNecessarios(so);
 		RecursosNecessarios recursosNecessarios3=new RecursosNecessarios(so);
 		
-		recursosNecessarios1.addRecursoNecessario(1);
-		recursosNecessarios1.addRecursoNecessario(1);
-		recursosNecessarios1.addRecursoNecessario(1);
+		recursosNecessarios1.addRecursoNecessario(2);
+		recursosNecessarios1.addRecursoNecessario(2);
+		recursosNecessarios1.addRecursoNecessario(3);
 
 		System.out.println(recursosNecessarios1.getRecursosNecessarios());
 
