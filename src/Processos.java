@@ -81,7 +81,16 @@ public class Processos extends Thread {
 				this.get_recursos_requisitados().add(0);
 			}
 		}
-
+/*
+			public void inicializarVetorRecursosAlocados(){	
+			ArrayList<Recursos> vetorRecursosDisponi
+			int tamVetorRecursosSO=this.get_sistema_operacional().get_recursos_size()
+			for(int i=0;i<tamVetorRecursosSO;i++){	
+				Recursos recurso=
+				this.get_recursos_requisitados().get(i).set(
+			}
+		}
+*/		
 		public int getRecursosSOArraySize(){
 			SistemaOperacional sistemaOperacional=this.get_sistema_operacional();	
 			return sistemaOperacional.get_recursos().size();	
@@ -94,14 +103,24 @@ public class Processos extends Thread {
 
 
 		public void incrementa_vetor_recursos_alocados(int indice){		
-			int recurso=this.get_recursos_alocados().get(indice);
+			ArrayList<Integer> recursos=this.get_recursos_alocados();
+			Integer recurso=recursos.get(indice);
 			recurso++;
+			recursos.set(indice,recurso);
 		}
 
 		public void incrementa_vetor_recursos_requisitados(int indice){		
 			int recurso=this.get_recursos_requisitados().get(indice);
 			recurso++;
 		}
+		
+		public void printar_recursos_alocados(){
+			System.out.println(this.get_recursos_alocados());
+		}	
+		public void printar_recursos_requisitados(){
+			System.out.println(this.get_recursos_requisitados());
+		}	
+
 
 		public void enviaLogDormindo(){
 			sistema.getInterface().addLog("Processo " + processo_id + " está dormindo.");
@@ -109,6 +128,8 @@ public class Processos extends Thread {
 
 		public void enviaLogSolicitacao(Recursos recurso){
 			sistema.getInterface().addLog("Processo " + processo_id + " solicitou recurso " + recurso.getNome());
+			sistema.getInterface().addLog("Processo " + processo_id+ this.get_recursos_alocados());
+			
 		}
 		public void enviaLogLiberouRecurso(Recursos recurso){
 			sistema.getInterface().addLog("Processo " + processo_id + " liberou recurso " + recurso.getNome());
@@ -163,6 +184,7 @@ public class Processos extends Thread {
 			if(sistemaOperacional.getRecursoQuantidadeDisponivel(indice)>0){
 				this.alocaRecurso(indice);
 				this.enviaLogSolicitacao(sistemaOperacional.getRecurso(indice));		
+				this.incrementa_vetor_recursos_alocados(indice);
 			}else{
 				this.enviaLogBloqueado(sistemaOperacional.getRecurso(indice));
 				this.incrementaVetorRequisicao(indice);

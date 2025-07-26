@@ -17,6 +17,7 @@ public class SistemaInterface extends JFrame {
 
     private final JTable tabelaProcessos;
     private final JTable tabelaRecursos;
+		private final JTable tabelaMatriz;
     private final JTextArea areaLog;
     private final JLabel labelDeadlock;
     private final AddProcessoDialog addProcessoDialog = new AddProcessoDialog(this);
@@ -42,6 +43,10 @@ public class SistemaInterface extends JFrame {
                 return false;
             }
         };
+				tabelaMatriz=new JTable(modeloProcessos);
+
+        tabs.add("Matrizes", new JScrollPane(tabelaMatriz));
+
         tabelaProcessos = new JTable(modeloProcessos);
 
         tabs.add("Processos", new JScrollPane(tabelaProcessos));

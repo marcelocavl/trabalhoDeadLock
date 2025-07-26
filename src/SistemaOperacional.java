@@ -14,8 +14,9 @@ public class SistemaOperacional extends Thread{
 	public ArrayList<Semaphore> semaphores = new ArrayList<>();
 	private final ArrayList<Processos> processos = new ArrayList<>();
 	private static SistemaInterface interfaceGrafica;
-	private int[][] recursosAlocadosProcessos;
-	private int[][] recursosRequisitadosProcessos;
+	//private int[][] recursosAlocadosProcessos;
+	//private int[][] recursosRequisitadosProcessos;
+	//private ValorMatriz matriz;
 /*
     public SistemaOperacional(SistemaInterface ui, int intervaloVerificacaoSegundos,ArrayList<Recursos> recursos,ArrayList<Processos> processos) {
 */
@@ -25,11 +26,28 @@ public class SistemaOperacional extends Thread{
     }
 	@Override
 	public void run(){
-		while(true){
-			this.gerar_matriz_recursos_alocados();
-			this.gerar_matriz_recursos_requisitados();
-			this.printar_matriz_recursos_alocados();
-			this.printar_matriz_recursos_requisitados();
+		System.out.println("thread so iniciada");
+		while(true){	
+			//this.gerar_matriz_recursos_alocados();
+			//this.gerar_matriz_recursos_requisitados();
+
+//			this.printar_matriz_recursos_alocados();
+//			this.printar_matriz_recursos_requisitados();
+				System.out.println("MATRIZ RECURSOS ALOCADOS");
+				this.printarRecursosAlocados();
+
+				System.out.println("MATRIZ RECURSOS REQUISITADOS");
+				this.printarRecursosRequisitados();
+
+
+	//		ValorMatriz matrizAlocados=new ValorMatriz(this.recursosAlocadosProcessos);
+				try {
+            Thread.sleep(1000); // Pausa de 1 segundo entre execuções
+						Utils.limparTela();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }		
+
 		}
 	}
 	//METODOS
@@ -135,7 +153,7 @@ public class SistemaOperacional extends Thread{
 		return this.retornarProcessoIndice(indice).get_recursos_requisitados();
 	}
 
-
+/*
 
 	public void gerar_matriz_recursos_alocados(){
 		int num_recursos=get_recursos_size();
@@ -151,7 +169,6 @@ public class SistemaOperacional extends Thread{
 		}
 		//this.printar_matriz_recursos_alocados
 	}
-
 	public void gerar_matriz_recursos_requisitados(){
 		int num_recursos=get_recursos_size();
 		int num_processos=retorna_num_processos();
@@ -167,8 +184,25 @@ public class SistemaOperacional extends Thread{
 		//this.printar_matriz_recursos_alocados
 	}
 
+*/
+	public void printarRecursosAlocados(){
+	 	ArrayList<Processos> processos=this.get_processos();
+		int processosArraySize=this.get_processos().size();		
+		for(int i=0;i<processosArraySize;i++){
+			processos.get(i).printar_recursos_alocados();
+		}
+	}
+
+	public void printarRecursosRequisitados(){
+	 	ArrayList<Processos> processos=this.get_processos();
+		int processosArraySize=this.get_processos().size();		
+		for(int i=0;i<processosArraySize;i++){
+			processos.get(i).printar_recursos_requisitados();
+		}
+	}
 
 
+/*
 	public void printar_matriz_recursos_alocados(){
 		int i,j;
 		for(i=0;i<this.get_processos().size();i++){	
@@ -178,7 +212,6 @@ public class SistemaOperacional extends Thread{
 				System.out.println("");
 		}
 	}
-
 	public void printar_matriz_recursos_requisitados(){
 		int i,j;
 		for(i=0;i<this.get_processos().size();i++){	
@@ -189,6 +222,7 @@ public class SistemaOperacional extends Thread{
 		}
 	}
 
+*/
 
 }
 
