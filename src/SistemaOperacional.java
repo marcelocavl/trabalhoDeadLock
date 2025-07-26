@@ -78,6 +78,10 @@ public class SistemaOperacional extends Thread{
 	public Recursos getRecurso(int indice){
 		return this.get_recursos().get(indice);
 	}
+	
+	public int getRecursoQuantidadeTotal(int indice){
+		return this.getRecurso(indice).getTotal();
+	}
 	//metodos add
 	public void add_recursos(ArrayList<Recursos> recursos){
 		for (int i = 0; i < recursos.size(); i++){

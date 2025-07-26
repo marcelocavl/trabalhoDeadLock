@@ -104,14 +104,37 @@ public class Processos extends Thread {
 
 		public void incrementa_vetor_recursos_alocados(int indice){		
 			ArrayList<Integer> recursos=this.get_recursos_alocados();
+			SistemaOperacional so=this.get_sistema_operacional();
 			Integer recurso=recursos.get(indice);
-			recurso++;
-			recursos.set(indice,recurso);
+			if(recurso++<so.getRecursoQuantidadeTotal(indice)){
+				recursos.set(indice,recurso);
+			}
 		}
 
+
+		public void decrementa_vetor_recursos_alocados(int indice){		
+			ArrayList<Integer> recursos=this.get_recursos_alocados();
+			SistemaOperacional so=this.get_sistema_operacional();
+			Integer recurso=recursos.get(indice);
+				recurso--;
+			//if(recurso--<so.getRecursoQuantidadeTotal(indice)){
+				recursos.set(indice,recurso);
+			//}
+		}
+
+
 		public void incrementa_vetor_recursos_requisitados(int indice){		
-			int recurso=this.get_recursos_requisitados().get(indice);
+			ArrayList<Integer> recursos=this.get_recursos_requisitados();
+			SistemaOperacional so=this.get_sistema_operacional();
+			Integer recurso=recursos.get(indice);
+			if(recurso++<so.getRecursoQuantidadeTotal(indice)){
+				recursos.set(indice,recurso);
+			}
+
+/*
+				int recurso=this.get_recursos_requisitados().get(indice);
 			recurso++;
+*/
 		}
 		
 		public void printar_recursos_alocados(){
@@ -187,7 +210,8 @@ public class Processos extends Thread {
 				this.incrementa_vetor_recursos_alocados(indice);
 			}else{
 				this.enviaLogBloqueado(sistemaOperacional.getRecurso(indice));
-				this.incrementaVetorRequisicao(indice);
+				//this.incrementaVetorRequisicao(indice);
+				this.incrementa_vetor_recursos_requisitados(indice);
 			}
 			
 		}
@@ -195,6 +219,7 @@ public class Processos extends Thread {
 		public void liberarRecurso(int indice){	
 			SistemaOperacional sistemaOperacional=this.get_sistema_operacional();
 			Recursos recurso=sistemaOperacional.get_recursos().get(indice);		
+			this.decrementa_vetor_recursos_alocados(indice);
 			Utils.up(recurso.getDisponivel());
 		}
 
