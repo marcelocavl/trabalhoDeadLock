@@ -12,6 +12,7 @@ public class Main{
 		SistemaOperacional so = new SistemaOperacional(tela, 5);
 		tela.setSistema(so);
 
+
 		AddRecursosDialog dialog = new AddRecursosDialog(tela);
         dialog.setVisible(true);
 			
@@ -29,10 +30,11 @@ public class Main{
    				tela.addLog("SO adicionou recurso: " + r.getNome() + 
                 " ID (" + r.getId() + "), total: " + r.getTotal() + 
                 ", disponível: " + r.getDisponivel());
-    			tela.addRecursoRow(r.getNome(), r.getDisponivel()); 
+    			tela.addRecursoRow(r.getNome(), r.getDisponivel().availablePermits()); 
 }
 
             tela.setVisible(true);
+						so.start();
         } else {
             System.exit(0);
         }

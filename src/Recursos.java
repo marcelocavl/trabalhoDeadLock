@@ -1,15 +1,17 @@
 
+import java.util.concurrent.Semaphore;
+
 public class Recursos {
     private final int id;
     private final String nome;
     private final int total;
-    private int disponivel;
+    private Semaphore disponivel;
 
     public Recursos(int id, String nome, int quantidade){
         this.id = id;
         this.nome = nome;
         this.total = quantidade;
-        this.disponivel = quantidade;
+        this.disponivel=new Semaphore(this.total);
     }
 
     public int getId() {
@@ -25,22 +27,22 @@ public class Recursos {
         return total;
     }
 
-    public int getDisponivel() {
+    public Semaphore getDisponivel() {
         return disponivel;
     }
-
+/*
     public void alocar() {
-        if (disponivel > 0) {
+        if (disponivel.availablePermits() > 0) {
             disponivel--;
         }
     }
-
     public void liberar() {
         if (disponivel < total) {
             disponivel++;
         }
     }
 
+*/
     @Override
     public String toString() {
         return "Recursos{" +

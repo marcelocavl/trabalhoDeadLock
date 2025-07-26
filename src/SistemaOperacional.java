@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 //CLASSE SISTEMA OPERACIONAL
-public class SistemaOperacional{
+public class SistemaOperacional extends Thread{
 	//ATRIBUTOS
 
 	// A capacidade máxima de cada arraylist deve ser a quantidade de tipos de recurso
@@ -14,15 +14,32 @@ public class SistemaOperacional{
 	public ArrayList<Semaphore> semaphores = new ArrayList<>();
 	private final ArrayList<Processos> processos = new ArrayList<>();
 	private static SistemaInterface interfaceGrafica;
-
-    public SistemaOperacional(SistemaInterface ui, int intervaloVerificacaoSegundos) {
+	private int[][] recursosAlocadosProcessos;
+	private int[][] recursosRequisitadosProcessos;
+/*
+    public SistemaOperacional(SistemaInterface ui, int intervaloVerificacaoSegundos,ArrayList<Recursos> recursos,ArrayList<Processos> processos) {
+*/
+	public SistemaOperacional(SistemaInterface ui,int intervaloVerificacaoSegundos){
         SistemaOperacional.interfaceGrafica = ui;
+//				this.recursos=recursos;
     }
-
+	@Override
+	public void run(){
+		while(true){
+			this.gerar_matriz_recursos_alocados();
+			this.gerar_matriz_recursos_requisitados();
+			this.printar_matriz_recursos_alocados();
+			this.printar_matriz_recursos_requisitados();
+		}
+	}
 	//METODOS
 	//metodos gets
 	public ArrayList<Recursos> get_recursos(){
 		return this.recursos;
+	}
+	
+	public ArrayList<Processos> get_processos(){
+		return this.processos;
 	}
 	
 	public int get_recursos_size(){
@@ -36,7 +53,13 @@ public class SistemaOperacional{
 		}
 		return lista_recursos;
 	}
-
+	
+	public int getRecursoQuantidadeDisponivel(int indice){
+		return this.get_recursos().get(indice).getDisponivel().availablePermits();
+	}
+	public Recursos getRecurso(int indice){
+		return this.get_recursos().get(indice);
+	}
 	//metodos add
 	public void add_recursos(ArrayList<Recursos> recursos){
 		for (int i = 0; i < recursos.size(); i++){
@@ -108,24 +131,64 @@ public class SistemaOperacional{
 		return this.retornarProcessoIndice(indice).get_recursos_alocados();
 	}
 
+	public ArrayList<Integer> retorna_vetor_requisitados_processo_indice(int indice){
+		return this.retornarProcessoIndice(indice).get_recursos_requisitados();
+	}
+
+
+
 	public void gerar_matriz_recursos_alocados(){
 		int num_recursos=get_recursos_size();
 		int num_processos=retorna_num_processos();
 		
-		int [][] matriz_alocados=new int[num_recursos][num_processos];
+		this.recursosAlocadosProcessos=new int[num_recursos][num_processos];
 		int i,j;	
 		for(i=0;i<num_processos;i++){
 			ArrayList<Integer> vetorAlocadosProcesso=retorna_vetor_alocados_processo_indice(i);
 			for(j=0;j<num_recursos;j++){	
-				matriz_alocados[i][j]=vetorAlocadosProcesso.get(j);
+				this.recursosAlocadosProcessos[i][j]=vetorAlocadosProcesso.get(j);
 			}
 		}
-		this.printar_matriz_recursos_alocados
+		//this.printar_matriz_recursos_alocados
 	}
-/*
-	public void printar_matriz_recursos_alocados(int[][] matriz,int column,int lines){
-		for(int i=0;i<co
+
+	public void gerar_matriz_recursos_requisitados(){
+		int num_recursos=get_recursos_size();
+		int num_processos=retorna_num_processos();
+		
+		this.recursosRequisitadosProcessos=new int[num_recursos][num_processos];
+		int i,j;	
+		for(i=0;i<num_processos;i++){
+			ArrayList<Integer> vetorAlocadosProcesso=retorna_vetor_requisitados_processo_indice(i);
+			for(j=0;j<num_recursos;j++){	
+				this.recursosRequisitadosProcessos[i][j]=vetorAlocadosProcesso.get(j);
+			}
+		}
+		//this.printar_matriz_recursos_alocados
 	}
-*/	
+
+
+
+	public void printar_matriz_recursos_alocados(){
+		int i,j;
+		for(i=0;i<this.get_processos().size();i++){	
+			for(j=0;j<this.get_recursos().size();j++){
+				System.out.print(this.recursosAlocadosProcessos[i][j]+"|");
+			}
+				System.out.println("");
+		}
+	}
+
+	public void printar_matriz_recursos_requisitados(){
+		int i,j;
+		for(i=0;i<this.get_processos().size();i++){	
+			for(j=0;j<this.get_recursos().size();j++){
+				System.out.print(this.recursosAlocadosProcessos[i][j]+"|");
+			}
+				System.out.println("");
+		}
+	}
+
+
 }
 
