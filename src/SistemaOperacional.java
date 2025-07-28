@@ -28,6 +28,7 @@ public class SistemaOperacional extends Thread{
 			printMatriz(matrizCR);
 
                 atualizarInterface();
+								printarRecursos();
                 Thread.sleep(1000);
                 Utils.limparTela();
 
@@ -42,6 +43,60 @@ public class SistemaOperacional extends Thread{
         interfaceGrafica.atualizarProcessos(processos);
         interfaceGrafica.atualizarMatrizVisual(combinarCReR(processos));
     }
+		public boolean conferirDeadLock(){
+			ArrayList<Integer> recursosDisponiveis=this.gerarArrayRecursosDisponiveis();
+			ArrayList<Processos> procesos=this.get_processos();
+			int processosArrayTam=processos.size();
+			int recursosArrayTam=recursos.size();
+
+			for(int i=0;i<processosArrayTam;i++){		
+				for(int j=0;j<processosArrayTam;j++){		
+					if(recursosDisponiveis.get(j)==processos.get(i).get_recursos_requisitados().get(j))
+						return false;
+				}
+			}
+			
+		}
+
+		public ArrayList<Integer> gerarArrayRecursosDisponiveis(){
+			ArrayList <Integer> recursosDisponiveis=new ArrayList<>();
+			ArrayList<Recursos>	recursos=this.get_recursos();
+			int arrayRecursosTam=recursos.size();
+			for (int i=0;i<arrayRecursosTam;i++){
+				recursosDisponiveis.add(recursos.get(i).getDisponivel().availablePermits());
+			}
+			return recursosDisponiveis;
+		}
+		
+		public int[][] gerarMatrizRecursosAlocados(){
+			ArrayList<Processos> processos=this.get_processos();			
+			ArrayList<Recursos> recursos=this.get_recursos();			
+			int processosArrayTam=processos.size();
+			int recursosArrayTam=recursos.size();
+
+			int[][] matrizRecursosAlocados=new int[processosArrayTam][recursosArrayTam];
+			for(int i=0;i<processosArrayTam;i++){
+				for(int j=0;j<processosArrayTam;j++){
+					matrizRecursosAlocados[i][j]=processos.get_recursos_requisitados().get(j);
+				}
+			}
+			return matrizRecursosAlocados;
+		}
+			
+
+	
+	
+	public ArrayList<Integer> retornaArrayRequisitados(ArrayList<Processos> processos,int indice){
+		return processos.get(indice).get_recursos_requisitados();
+		
+	}
+	public void printarRecursos(){
+		ArrayList<Recursos> recursos=this.get_recursos();
+		int recursosSize=recursos.size();
+		for(int i=0;i<recursosSize;i++){
+			System.out.println(recursos.get(i).toString());
+		}
+	}
 	
 	public void printMatriz(int[][] matriz) {
 		System.out.println("Matriz:");

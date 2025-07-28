@@ -122,6 +122,17 @@ public class Processos extends Thread {
 			//}
 		}
 
+		public void decrementa_vetor_recursos_requisitados(int indice){		
+			ArrayList<Integer> recursos=this.get_recursos_requisitados();
+			SistemaOperacional so=this.get_sistema_operacional();
+			Integer recurso=recursos.get(indice);
+				recurso--;
+			//if(recurso--<so.getRecursoQuantidadeTotal(indice)){
+				recursos.set(indice,recurso);
+			//}
+		}
+
+
 
 		public void incrementa_vetor_recursos_requisitados(int indice){		
 			ArrayList<Integer> recursos=this.get_recursos_requisitados();
@@ -190,6 +201,9 @@ public class Processos extends Thread {
 			SistemaOperacional sistemaOperacional=this.get_sistema_operacional();
 			Recursos recurso=sistemaOperacional.get_recursos().get(indice);		
 			Utils.down(recurso.getDisponivel());
+			if(this.get_recursos_requisitados().get(indice)>0){
+				this.decrementa_vetor_recursos_requisitados(indice);
+			}
 			
 		}
 	
@@ -203,37 +217,46 @@ public class Processos extends Thread {
 		public void solicitar(int indice){
 			SistemaOperacional sistemaOperacional=get_sistema_operacional();
 //			ArrayList<Recursos> recursosSO=this.getRecursosSO();
-			
+			Utils.down(Semaforos.mutexRecursos);
 			if(sistemaOperacional.getRecursoQuantidadeDisponivel(indice)>0){
 				this.alocaRecurso(indice);
 				this.enviaLogSolicitacao(sistemaOperacional.getRecurso(indice));		
 				this.incrementa_vetor_recursos_alocados(indice);
+				Utils.up(Semaforos.mutexRecursos);
 			}else{
 				this.enviaLogBloqueado(sistemaOperacional.getRecurso(indice));
 				//this.incrementaVetorRequisicao(indice);
 				this.incrementa_vetor_recursos_requisitados(indice);
+				Utils.up(Semaforos.mutexRecursos);
+				this.alocaRecurso(indice);
+				this.enviaLogSolicitacao(sistemaOperacional.getRecurso(indice));		
+				this.incrementa_vetor_recursos_alocados(indice);
 			}
-			
 		}
 
 		public void liberarRecurso(int indice){	
+			Utils.down(Semaforos.mutexRecursos);
 			SistemaOperacional sistemaOperacional=this.get_sistema_operacional();
 			Recursos recurso=sistemaOperacional.get_recursos().get(indice);		
-			this.decrementa_vetor_recursos_alocados(indice);
 			Utils.up(recurso.getDisponivel());
-		}
+			this.decrementa_vetor_recursos_alocados(indice);
+			Utils.up(Semaforos.mutexRecursos);
+	}	
 
 
-    @Override
-    public void run() {
+			
+		public void run() {
 				this.inicializarVetores();
         while (true) {
             try {		
 							int indiceAleatorio=geraNumeroAleatorio();
 							esperandoSolicitar();
 							solicitar(indiceAleatorio);
+							Thread executar=new Thread(()-> {
 							executando();
 							liberarRecurso(indiceAleatorio);
+							});
+							executar.start();
 														
 /*
 	               setStatus("Dormindo");
@@ -278,4 +301,6 @@ public class Processos extends Thread {
             }
         }
     }
+
+	
 }

@@ -133,7 +133,7 @@ public class SistemaInterface extends JFrame {
                 "P" + p.get_processo_id(),
                 p.get_tempo_solicitacao(),
                 p.get_tempo_utilizacao(),
-                p.getStatus(),
+                p.getState(),
                 "-", 
                 "-"
             });
