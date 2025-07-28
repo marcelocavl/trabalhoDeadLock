@@ -17,12 +17,12 @@ public class SistemaInterface extends JFrame {
 
     private final JTable tabelaProcessos;
     private final JTable tabelaRecursos;
-		private final JTable tabelaMatriz;
     private final JTextArea areaLog;
     private final JLabel labelDeadlock;
     private final AddProcessoDialog addProcessoDialog = new AddProcessoDialog(this);
     private final DefaultTableModel modeloProcessos;
     private final DefaultTableModel modeloRecursos;
+    private final JPanel painelMatrizVisual;
     private SistemaOperacional sistema;
     int LOGINDEX = 0;
 
@@ -35,6 +35,10 @@ public class SistemaInterface extends JFrame {
 
         JTabbedPane tabs = new JTabbedPane();
 
+        painelMatrizVisual = new JPanel(new BorderLayout());
+        tabs.add("Matrizes", painelMatrizVisual);
+
+
         modeloProcessos = new DefaultTableModel(
             new Object[]{"Processo", "∆T Solicitação", "∆T Utilização", "Status", "C", "R"}, 0
         ) {
@@ -43,12 +47,7 @@ public class SistemaInterface extends JFrame {
                 return false;
             }
         };
-				tabelaMatriz=new JTable(modeloProcessos);
-
-        tabs.add("Matrizes", new JScrollPane(tabelaMatriz));
-
         tabelaProcessos = new JTable(modeloProcessos);
-
         tabs.add("Processos", new JScrollPane(tabelaProcessos));
 
         modeloRecursos = new DefaultTableModel(
@@ -60,32 +59,36 @@ public class SistemaInterface extends JFrame {
             }
         };
         tabelaRecursos = new JTable(modeloRecursos);
-        
         tabs.add("Recursos", new JScrollPane(tabelaRecursos));
 
-        areaLog = new JTextArea(10, 80);
-        areaLog.setEditable(false);
-        JScrollPane scrollLog = new JScrollPane(areaLog);
-        tabs.add("Log", scrollLog);
-
+        // abas
         add(tabs, BorderLayout.CENTER);
 
-        JButton addProcessoButton = new JButton("Adicionar Processo");
+        // log
+        areaLog = new JTextArea(6, 80);
+        areaLog.setEditable(false);
+        JScrollPane scrollLog = new JScrollPane(areaLog);
+        scrollLog.setPreferredSize(new Dimension(0, 120));
 
-        addProcessoButton.addActionListener(e -> {
-            openAddProcessoDialog();
-        });
-
+        // Status de deadlock
         labelDeadlock = new JLabel("Status: Sem deadlock");
         labelDeadlock.setForeground(Color.GREEN);
         labelDeadlock.setHorizontalAlignment(SwingConstants.CENTER);
         labelDeadlock.setFont(new Font("Arial", Font.BOLD, 14));
 
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        addProcessoButton.setPreferredSize(new Dimension(200, 30));
-        topPanel.add(addProcessoButton);
+        // painel inferior
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(labelDeadlock, BorderLayout.NORTH);
+        bottomPanel.add(scrollLog, BorderLayout.CENTER);
+        add(bottomPanel, BorderLayout.SOUTH);
 
-        add(labelDeadlock, BorderLayout.SOUTH);
+        //adicionar processo
+        JButton addProcessoButton = new JButton("Adicionar Processo");
+        addProcessoButton.setPreferredSize(new Dimension(200, 30));
+        addProcessoButton.addActionListener(e -> openAddProcessoDialog());
+
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        topPanel.add(addProcessoButton);
         add(topPanel, BorderLayout.NORTH);
 
         setVisible(true);
@@ -104,26 +107,27 @@ public class SistemaInterface extends JFrame {
     }
 
     public void setSistema(SistemaOperacional sistema) {
-    this.sistema = sistema;
-}
-    public void addLog(String logText){
+        this.sistema = sistema;
+    }
+
+    public void addLog(String logText) {
         areaLog.append("Log(" + LOGINDEX + "): " + logText + "\n");
         LOGINDEX++;
     }
 
     public void atualizarRecursos(List<Recursos> recursos) {
-    modeloRecursos.setRowCount(0); 
-    for (Recursos r : recursos) {
-        modeloRecursos.addRow(new Object[]{
-            r.getNome(),
-            r.getTotal(),
-            r.getDisponivel()
-        });
+        modeloRecursos.setRowCount(0);
+        for (Recursos r : recursos) {
+            modeloRecursos.addRow(new Object[]{
+                r.getNome(),
+                r.getTotal(),
+                r.getDisponivel().availablePermits()
+            });
+        }
     }
-}
 
     public void atualizarProcessos(List<Processos> processos) {
-        modeloProcessos.setRowCount(0); 
+        modeloProcessos.setRowCount(0);
         for (Processos p : processos) {
             modeloProcessos.addRow(new Object[]{
                 "P" + p.get_processo_id(),
@@ -131,7 +135,7 @@ public class SistemaInterface extends JFrame {
                 p.get_tempo_utilizacao(),
                 p.getStatus(),
                 "-", 
-                "-"  
+                "-"
             });
         }
     }
@@ -146,14 +150,13 @@ public class SistemaInterface extends JFrame {
         }
     }
 
-
-    public void addProcessoRow(int id, float tempo_solicitacao, float tempo_utilizacao){
+    public void addProcessoRow(int id, float tempo_solicitacao, float tempo_utilizacao) {
         DefaultTableModel model = (DefaultTableModel) tabelaProcessos.getModel();
         model.addRow(new Object[]{"P" + id, tempo_solicitacao, tempo_utilizacao, "Dormindo", null, null});
-}
+    }
 
     public void openAddProcessoDialog() {
-    addProcessoDialog.setVisible(true);
+        addProcessoDialog.setVisible(true);
         if (addProcessoDialog.isConfirmed()) {
             int id = addProcessoDialog.getId();
             float ts = addProcessoDialog.getTempoSolicitacao();
@@ -162,15 +165,24 @@ public class SistemaInterface extends JFrame {
             addProcessoRow(id, ts, tu);
 
             Processos novo = new Processos(id, ts, tu, sistema);
-            sistema.add_processos(novo); 
-            novo.start(); 
+            sistema.add_processos(novo);
+            novo.start();
 
             addLog("Processo P" + id + " criado e iniciado.");
         }
-}
+    }
 
-    public void addRecursoRow(String nome, int quantidade){
+    public void addRecursoRow(String nome, int quantidade) {
         DefaultTableModel model = (DefaultTableModel) tabelaRecursos.getModel();
         model.addRow(new Object[]{nome, quantidade, quantidade});
     }
+
+    public void atualizarMatrizVisual(int[][] matriz) {
+        painelMatrizVisual.removeAll(); 
+        ValorMatriz painel = new ValorMatriz(matriz);
+        painelMatrizVisual.add(painel, BorderLayout.CENTER);
+        painelMatrizVisual.revalidate();
+        painelMatrizVisual.repaint();
+    }
+    
 }

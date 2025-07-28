@@ -1,8 +1,8 @@
 
 //IMPORTAÇÕES
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Semaphore;
 
 //CLASSE SISTEMA OPERACIONAL
 public class SistemaOperacional extends Thread{
@@ -11,222 +11,147 @@ public class SistemaOperacional extends Thread{
 	// A capacidade máxima de cada arraylist deve ser a quantidade de tipos de recurso
 	// para isso, ao invés de arraylist, deve ser usado somente array
 	public ArrayList<Recursos> recursos = new ArrayList<>();
-	public ArrayList<Semaphore> semaphores = new ArrayList<>();
-	private final ArrayList<Processos> processos = new ArrayList<>();
-	private static SistemaInterface interfaceGrafica;
-	//private int[][] recursosAlocadosProcessos;
-	//private int[][] recursosRequisitadosProcessos;
-	//private ValorMatriz matriz;
-/*
-    public SistemaOperacional(SistemaInterface ui, int intervaloVerificacaoSegundos,ArrayList<Recursos> recursos,ArrayList<Processos> processos) {
-*/
-	public SistemaOperacional(SistemaInterface ui,int intervaloVerificacaoSegundos){
+    private final ArrayList<Processos> processos = new ArrayList<>();
+    private static SistemaInterface interfaceGrafica;
+
+    public SistemaOperacional(SistemaInterface ui, int intervaloVerificacaoSegundos) {
         SistemaOperacional.interfaceGrafica = ui;
-//				this.recursos=recursos;
     }
-	@Override
-	public void run(){
-		System.out.println("thread so iniciada");
-		while(true){	
-			//this.gerar_matriz_recursos_alocados();
-			//this.gerar_matriz_recursos_requisitados();
 
-//			this.printar_matriz_recursos_alocados();
-//			this.printar_matriz_recursos_requisitados();
-				System.out.println("MATRIZ RECURSOS ALOCADOS");
-				this.printarRecursosAlocados();
+    @Override
+    public void run() {
+        System.out.println("thread so iniciada");
+        while (true) {
+            try {
+			int[][] matrizCR = combinarCReR(processos);
+			interfaceGrafica.atualizarMatrizVisual(matrizCR);
+			printMatriz(matrizCR);
 
-				System.out.println("MATRIZ RECURSOS REQUISITADOS");
-				this.printarRecursosRequisitados();
+                atualizarInterface();
+                Thread.sleep(1000);
+                Utils.limparTela();
 
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-	//		ValorMatriz matrizAlocados=new ValorMatriz(this.recursosAlocadosProcessos);
-				try {
-            Thread.sleep(1000); // Pausa de 1 segundo entre execuções
-						Utils.limparTela();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }		
-
+    public void atualizarInterface() {
+        interfaceGrafica.atualizarRecursos(recursos);
+        interfaceGrafica.atualizarProcessos(processos);
+        interfaceGrafica.atualizarMatrizVisual(combinarCReR(processos));
+    }
+	
+	public void printMatriz(int[][] matriz) {
+		System.out.println("Matriz:");
+		for (int[] linha : matriz) {
+			for (int val : linha) {
+				System.out.print(val + " ");
+			}
+			System.out.println();
 		}
 	}
-	//METODOS
-	//metodos gets
-	public ArrayList<Recursos> get_recursos(){
-		return this.recursos;
-	}
-	
-	public ArrayList<Processos> get_processos(){
-		return this.processos;
-	}
-	
-	public int get_recursos_size(){
-		return this.get_recursos().size();
-	}
-	public ArrayList<String> get_lista_recursos(){
-		ArrayList<String> lista_recursos = new ArrayList<>();
 
-		for (int i = 0; i < recursos.size(); i++){
-			lista_recursos.add(recursos.get(i).toString());
-		}
-		return lista_recursos;
-	}
-	
-	public int getRecursoQuantidadeDisponivel(int indice){
-		return this.get_recursos().get(indice).getDisponivel().availablePermits();
-	}
-	public Recursos getRecurso(int indice){
-		return this.get_recursos().get(indice);
-	}
-	
-	public int getRecursoQuantidadeTotal(int indice){
-		return this.getRecurso(indice).getTotal();
-	}
-	//metodos add
-	public void add_recursos(ArrayList<Recursos> recursos){
-		for (int i = 0; i < recursos.size(); i++){
-			this.get_recursos().add(recursos.get(i));
-		}
-	}
+    public int[][] combinarCReR(List<Processos> processos) {
+        if (processos.isEmpty()) return new int[0][0];
+        int n = processos.size();
+        int m = processos.get(0).get_recursos_alocados().size();
+        int[][] combinada = new int[n][2 * m];
+
+        for (int i = 0; i < n; i++) {
+            List<Integer> c = processos.get(i).get_recursos_alocados();
+            List<Integer> r = processos.get(i).get_recursos_requisitados();
+            for (int j = 0; j < m; j++) {
+                combinada[i][j] = c.get(j);
+                combinada[i][j + m] = r.get(j);
+            }
+        }
+        return combinada;
+    }
+
+    // GETTERS
+    public ArrayList<Recursos> get_recursos() {
+        return recursos;
+    }
+
+    public ArrayList<Processos> get_processos() {
+        return processos;
+    }
+
+    public int get_recursos_size() {
+        return recursos.size();
+    }
+
+    public int getRecursoQuantidadeDisponivel(int indice) {
+        return recursos.get(indice).getDisponivel().availablePermits();
+    }
+
+    public Recursos getRecurso(int indice) {
+        return recursos.get(indice);
+    }
+
+    public int getRecursoQuantidadeTotal(int indice) {
+        return recursos.get(indice).getTotal();
+    }
+
+    // ADD
+    public void add_recursos(ArrayList<Recursos> novos) {
+        recursos.addAll(novos);
+    }
+
     public void add_processos(Processos p) {
         processos.add(p);
     }
 
+    // Verificações
+    public boolean is_recurso_existente(Recursos recurso) {
+        return recursos.contains(recurso);
+    }
 
-	//metodos de decremento de quantidade de instancia de um recurso
-	public boolean remove_uma_instancia_recurso(Recursos recurso){	
-		if(!this.is_recurso_existente(recurso))
-			return false;	
-		return this.get_recursos().remove(recurso);
-	}
-	
-	//metodos de retorno de indice
-	public int retorna_indice_do_recurso_no_arraylist(Recursos recurso){
-		if(!this.is_recurso_existente(recurso))
-			return -1;
-		return this.get_recursos().indexOf(recurso);
-			
-	}
+    // Sorteios
+    public int sortearNumero() {
+        return new Random().nextInt(get_recursos_size());
+    }
 
-	//metodos de verificacao
-	public boolean is_recurso_existente(Recursos recurso){
-		return this.get_recursos().contains(recursos);
-	}
+    public Recursos sortearRecursoAleatorio() {
+        return recursos.get(sortearNumero());
+    }
 
-	public void atualizarInterface() {
-    interfaceGrafica.atualizarRecursos(recursos);
-    interfaceGrafica.atualizarProcessos(processos);
+    public Recursos retornarRecursoPorIndice(int indice) {
+        return recursos.get(indice);
+    }
+
+    // Interface getter
+    public SistemaInterface getInterface() {
+        return interfaceGrafica;
+    }
+
+    public int retorna_num_processos() {
+        return processos.size();
+    }
+
+    public Processos retornarProcessoIndice(int indice) {
+        return processos.get(indice);
+    }
+
+    public ArrayList<Integer> retorna_vetor_alocados_processo_indice(int indice) {
+        return processos.get(indice).get_recursos_alocados();
+    }
+
+    public ArrayList<Integer> retorna_vetor_requisitados_processo_indice(int indice) {
+        return processos.get(indice).get_recursos_requisitados();
+    }
+
+    public void printarRecursosAlocados() {
+        for (Processos p : processos) {
+            p.printar_recursos_alocados();
+        }
+    }
+
+    public void printarRecursosRequisitados() {
+        for (Processos p : processos) {
+            p.printar_recursos_requisitados();
+        }
+    }
 }
-	//sorteio aleatorio do recursp
-	
-	public int sortearNumero()	{
-		Random rand = new Random();
-		int random=rand.nextInt(get_recursos_size());
-		return random;
-	}
-	public Recursos sortearRecursoAleatorio() {
-		Random rand = new Random();
-		return recursos.get(rand.nextInt(recursos.size()));
-	}
-	public Recursos retornarRecursoPorIndice(int indice) {
-		return recursos.get(indice);
-	}
-
-
-	public SistemaInterface getInterface() {
-    	return interfaceGrafica;
-}
-
-	public int retorna_num_processos(){
-		return this.processos.size();
-	}
-	
-	
-	public ArrayList<Processos> getArrayProcessos(){
-		return this.processos;
-	}
-	public Processos retornarProcessoIndice(int indice){		
-		return this.getArrayProcessos().get(indice);
-	}
-
-	public ArrayList<Integer> retorna_vetor_alocados_processo_indice(int indice){
-		return this.retornarProcessoIndice(indice).get_recursos_alocados();
-	}
-
-	public ArrayList<Integer> retorna_vetor_requisitados_processo_indice(int indice){
-		return this.retornarProcessoIndice(indice).get_recursos_requisitados();
-	}
-
-/*
-
-	public void gerar_matriz_recursos_alocados(){
-		int num_recursos=get_recursos_size();
-		int num_processos=retorna_num_processos();
-		
-		this.recursosAlocadosProcessos=new int[num_recursos][num_processos];
-		int i,j;	
-		for(i=0;i<num_processos;i++){
-			ArrayList<Integer> vetorAlocadosProcesso=retorna_vetor_alocados_processo_indice(i);
-			for(j=0;j<num_recursos;j++){	
-				this.recursosAlocadosProcessos[i][j]=vetorAlocadosProcesso.get(j);
-			}
-		}
-		//this.printar_matriz_recursos_alocados
-	}
-	public void gerar_matriz_recursos_requisitados(){
-		int num_recursos=get_recursos_size();
-		int num_processos=retorna_num_processos();
-		
-		this.recursosRequisitadosProcessos=new int[num_recursos][num_processos];
-		int i,j;	
-		for(i=0;i<num_processos;i++){
-			ArrayList<Integer> vetorAlocadosProcesso=retorna_vetor_requisitados_processo_indice(i);
-			for(j=0;j<num_recursos;j++){	
-				this.recursosRequisitadosProcessos[i][j]=vetorAlocadosProcesso.get(j);
-			}
-		}
-		//this.printar_matriz_recursos_alocados
-	}
-
-*/
-	public void printarRecursosAlocados(){
-	 	ArrayList<Processos> processos=this.get_processos();
-		int processosArraySize=this.get_processos().size();		
-		for(int i=0;i<processosArraySize;i++){
-			processos.get(i).printar_recursos_alocados();
-		}
-	}
-
-	public void printarRecursosRequisitados(){
-	 	ArrayList<Processos> processos=this.get_processos();
-		int processosArraySize=this.get_processos().size();		
-		for(int i=0;i<processosArraySize;i++){
-			processos.get(i).printar_recursos_requisitados();
-		}
-	}
-
-
-/*
-	public void printar_matriz_recursos_alocados(){
-		int i,j;
-		for(i=0;i<this.get_processos().size();i++){	
-			for(j=0;j<this.get_recursos().size();j++){
-				System.out.print(this.recursosAlocadosProcessos[i][j]+"|");
-			}
-				System.out.println("");
-		}
-	}
-	public void printar_matriz_recursos_requisitados(){
-		int i,j;
-		for(i=0;i<this.get_processos().size();i++){	
-			for(j=0;j<this.get_recursos().size();j++){
-				System.out.print(this.recursosAlocadosProcessos[i][j]+"|");
-			}
-				System.out.println("");
-		}
-	}
-
-*/
-
-}
-

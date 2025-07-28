@@ -5,38 +5,29 @@ import java.util.ArrayList;
 
 //CLASSE MAIN
 
-public class Main{
-	public static void main(String args[]){	
 
-		SistemaInterface tela = new SistemaInterface();
-		SistemaOperacional so = new SistemaOperacional(tela, 5);
-		tela.setSistema(so);
+public class Main {
+    public static void main(String args[]) {    
+        SistemaInterface tela = new SistemaInterface();
+        SistemaOperacional so = new SistemaOperacional(tela, 5);
+        tela.setSistema(so);
 
-
-		AddRecursosDialog dialog = new AddRecursosDialog(tela);
+        AddRecursosDialog dialog = new AddRecursosDialog(tela);
         dialog.setVisible(true);
-			
+
         if (dialog.isConfirmed()) {
-			ArrayList<Recursos> recursos = dialog.getRecursos();
+            ArrayList<Recursos> recursos = dialog.getRecursos();
+            so.add_recursos(recursos);
 
-            // System.out.println("Recurso: " + nome);
-            // System.out.println("ID: " + identificador);
-            // System.out.println("Quantidade: " + quantidade);
-
-			so.add_recursos(recursos);
-
-			for (int i = 0; i < recursos.size(); i++) {
-   				 Recursos r = recursos.get(i);
-   				tela.addLog("SO adicionou recurso: " + r.getNome() + 
-                " ID (" + r.getId() + "), total: " + r.getTotal() + 
-                ", disponível: " + r.getDisponivel());
-    			tela.addRecursoRow(r.getNome(), r.getDisponivel().availablePermits()); 
-}
+            for (Recursos r : recursos) {
+                tela.addLog("SO adicionou recurso: " + r); // usa toString() formatado
+                tela.addRecursoRow(r.getNome(), r.getDisponivel().availablePermits()); 
+            }
 
             tela.setVisible(true);
-						so.start();
+            so.start();
         } else {
             System.exit(0);
         }
-	}	
+    }    
 }

@@ -1,5 +1,5 @@
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 public class ValorMatriz extends JPanel {
     private int[][] valor;
@@ -13,16 +13,16 @@ public class ValorMatriz extends JPanel {
         repaint(); // Redesenha a tela com o novo valor
     }
 */
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    // @Override
+    // protected void paintComponent(Graphics g) {
+    //     super.paintComponent(g);
 
-        g.setFont(new Font("Arial", Font.BOLD, 40));
-        g.setColor(Color.BLUE);
+    //     g.setFont(new Font("Arial", Font.BOLD, 40));
+    //     g.setColor(Color.BLUE);
 
-        String texto = String.valueOf(valor);
-        g.drawString(texto, 100, 100); // posição x=100, y=100
-    }
+    //     String texto = String.valueOf(valor);
+    //     g.drawString(texto, 100, 100); // posição x=100, y=100
+    // }
 
     @Override
     public Dimension getPreferredSize() {
@@ -44,5 +44,22 @@ public class ValorMatriz extends JPanel {
         }).start();
     }
 
+@Override
+protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    g.setFont(new Font("Arial", Font.BOLD, 20));
+    g.setColor(Color.BLUE);
+
+    int cellWidth = 40;
+    int cellHeight = 30;
+    int offsetX = 50;
+    int offsetY = 50;
+
+    for (int i = 0; i < valor.length; i++) {
+        for (int j = 0; j < valor[i].length; j++) {
+            g.drawString(String.valueOf(valor[i][j]), offsetX + j * cellWidth, offsetY + i * cellHeight);
+        }
+    }
+}
 }
 
