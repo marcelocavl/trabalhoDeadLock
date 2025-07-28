@@ -29,6 +29,9 @@ public class SistemaOperacional extends Thread{
 
                 atualizarInterface();
 								printarRecursos();
+								if(!this.conferirDeadLock()){
+									interfaceGrafica.setDeadlockStatus(true);	
+								}
                 Thread.sleep(1000);
                 Utils.limparTela();
 
@@ -48,13 +51,20 @@ public class SistemaOperacional extends Thread{
 			ArrayList<Processos> procesos=this.get_processos();
 			int processosArrayTam=processos.size();
 			int recursosArrayTam=recursos.size();
+			boolean processoPodeRodar=true;
 
 			for(int i=0;i<processosArrayTam;i++){		
 				for(int j=0;j<processosArrayTam;j++){		
-					if(recursosDisponiveis.get(j)==processos.get(i).get_recursos_requisitados().get(j))
-						return false;
+					processoPodeRodar=true;
+					if(recursosDisponiveis.get(j)<processos.get(i).get_recursos_requisitados().get(j)){
+						processoPodeRodar=false;
+						break;	
+					}
 				}
+				if (processoPodeRodar==true)
+					break;
 			}
+			return processoPodeRodar;
 			
 		}
 
@@ -77,7 +87,7 @@ public class SistemaOperacional extends Thread{
 			int[][] matrizRecursosAlocados=new int[processosArrayTam][recursosArrayTam];
 			for(int i=0;i<processosArrayTam;i++){
 				for(int j=0;j<processosArrayTam;j++){
-					matrizRecursosAlocados[i][j]=processos.get_recursos_requisitados().get(j);
+					matrizRecursosAlocados[i][j]=processos.get(i).get_recursos_requisitados().get(j);
 				}
 			}
 			return matrizRecursosAlocados;

@@ -149,6 +149,14 @@ public class SistemaInterface extends JFrame {
             labelDeadlock.setForeground(Color.GREEN);
         }
     }
+		
+		public void setDeadlockStatus(boolean emDeadlock){
+			if(emDeadlock){
+				labelDeadlock.setText("DEADLOCK DETECTADO");
+				labelDeadlock.setForeground(Color.RED);	
+				return;	
+			}
+		}
 
     public void addProcessoRow(int id, float tempo_solicitacao, float tempo_utilizacao) {
         DefaultTableModel model = (DefaultTableModel) tabelaProcessos.getModel();

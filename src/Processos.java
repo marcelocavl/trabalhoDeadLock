@@ -186,7 +186,13 @@ public class Processos extends Thread {
 
 		public void executando(){
 			try{	
-			Thread.sleep((long) (this.tempo_utilizacao * 1000));
+			boolean loop=true;
+			while(loop){
+				Thread.sleep((long) (this.tempo_utilizacao * 1000));	
+				if(this.getState()!=Thread.State.WAITING){
+					loop=false;	
+				}
+			}
 			}catch(Exception e){}
 		}
 
