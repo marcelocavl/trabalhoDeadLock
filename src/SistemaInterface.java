@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 
 // MATRIZ           O QUE REPRESENTA
@@ -140,7 +141,7 @@ public class SistemaInterface extends JFrame {
         }
     }
 
-    public void setDeadlockStatus(List<Integer> idsEmDeadlock) {
+    public void setDeadlockStatus(ArrayList<Integer> idsEmDeadlock) {
         if (idsEmDeadlock.size()>0) {
             labelDeadlock.setText("DEADLOCK DETECTADO: Processos " + idsEmDeadlock);
             labelDeadlock.setForeground(Color.RED);

@@ -30,7 +30,8 @@ public class SistemaOperacional extends Thread{
 
                 atualizarInterface();
 								printarRecursos();
-								interfaceGrafica.setDeadlockStatus(this.conferirDeadLock());	
+								ArrayList<Integer> processosEmDeadlock=retornarArrayIds(this.conferirDeadLock());
+								interfaceGrafica.setDeadlockStatus(processosEmDeadlock);	
                 Thread.sleep(1000);
                 Utils.limparTela();
 
@@ -40,12 +41,20 @@ public class SistemaOperacional extends Thread{
         }
     }
 
+		public ArrayList<Integer> retornarArrayIds(ArrayList<Processos> processos){
+			ArrayList<Integer> arrayIds=new ArrayList<>();
+			for(int i=0;i<processos.size();i++){	
+				arrayIds.add(processos.get(i).get_processo_id());	
+			}
+			return arrayIds;
+		}
+
     public void atualizarInterface() {
         interfaceGrafica.atualizarRecursos(recursos);
         interfaceGrafica.atualizarProcessos(processos);
         interfaceGrafica.atualizarMatrizVisual(combinarCReR(processos));
     }
-		public ArrayList<Integer> conferirDeadLock(){
+		public ArrayList<Processos> conferirDeadLock(){
 			//gerando variaveis para o algoritmo
 			//<INTEGER>RECURSOS DISPONIVEIS
 			//<PROCESSOS>PROCESSOS
@@ -56,25 +65,32 @@ public class SistemaOperacional extends Thread{
 			int processosArrayTam=processos.size();
 			int recursosArrayTam=recursos.size();
 			boolean processoPodeRodar=true;
-			ArrayList<Integer> processosEmDeadLock=new ArrayList<>();
-			
+			ArrayList<Processos>processosEmDeadLock=new ArrayList<>();
+	 		processosEmDeadLock=Utils.copiarProcessos(processos);
+			//processosEmDeadLock=Utils.preencherSeq(processosArrayTam,recursosArrayTam);
+			int i=0;	
+			if(processosArrayTam>0){
+			while(i<processosArrayTam){		
+				if(Utils.arrayMaior(recursosDisponiveis,processos.get(i).get_recursos_requisitados())){
+						//ArrayList<Integer> processosRecursosAlocados=this.retornaArrayAlocados(processosEmDeadLock,i);
+						ArrayList<Integer> processosRecursosAlocados=processosEmDeadLock.get(i).get_recursos_alocados();
+						ArrayList<Integer> processosRecursosRequisitados=processosEmDeadLock.get(i).get_recursos_requisitados();
 
-
-			for(int i=0;i<processosArrayTam;i++){		
-				for(int j=0;j<processosArrayTam;j++){		
-					processoPodeRodar=true;
-					if(recursosDisponiveis.get(j)<processos.get(i).get_recursos_requisitados().get(j)){
-						processosEmDeadLock.add(j);
-						//processoPodeRodar=false;
-					}else{
-						ArrayList<Integer> processosRecursosAlocados=this.retornaArrayAlocados(processos,j);
-						recursosDisponiveis=Utils.somarArrays(processosRecursosAlocados,recursosDisponiveis);
-					}
+						recursosDisponiveis=Utils.subtrairArrays(recursosDisponiveis,processosRecursosRequisitados);
+						ArrayList<Integer> aux=Utils.somarArrays(processosRecursosAlocados,processosRecursosRequisitados);
+						recursosDisponiveis=Utils.somarArrays(recursosDisponiveis,aux);
+						processosEmDeadLock.remove(i);	
+						processosArrayTam--;
+						i=0;
+				}else{		
+					i++;
 				}
 			}
+			}
 			return processosEmDeadLock;
+			}
 			
-		}
+
 
 		public ArrayList<Integer> gerarArrayRecursosDisponiveis(){
 			ArrayList <Integer> recursosDisponiveis=new ArrayList<>();
@@ -106,6 +122,7 @@ public class SistemaOperacional extends Thread{
 	
 	public ArrayList<Integer> retornaArrayRequisitados(ArrayList<Processos> processos,int indice){
 		return processos.get(indice).get_recursos_requisitados();
+
 	}
 	public ArrayList<Integer> retornaArrayAlocados(ArrayList<Processos> processos,int indice){
 		return processos.get(indice).get_recursos_alocados();
