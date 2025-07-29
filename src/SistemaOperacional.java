@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
 //CLASSE SISTEMA OPERACIONAL
 public class SistemaOperacional extends Thread{
 	//ATRIBUTOS
-
+	
 	// A capacidade máxima de cada arraylist deve ser a quantidade de tipos de recurso
 	// para isso, ao invés de arraylist, deve ser usado somente array
 	public ArrayList<Recursos> recursos = new ArrayList<>();
@@ -29,9 +30,7 @@ public class SistemaOperacional extends Thread{
 
                 atualizarInterface();
 								printarRecursos();
-								if(!this.conferirDeadLock()){
-									interfaceGrafica.setDeadlockStatus(true);	
-								}
+								interfaceGrafica.setDeadlockStatus(this.conferirDeadLock());	
                 Thread.sleep(1000);
                 Utils.limparTela();
 
@@ -46,25 +45,34 @@ public class SistemaOperacional extends Thread{
         interfaceGrafica.atualizarProcessos(processos);
         interfaceGrafica.atualizarMatrizVisual(combinarCReR(processos));
     }
-		public boolean conferirDeadLock(){
+		public ArrayList<Integer> conferirDeadLock(){
+			//gerando variaveis para o algoritmo
+			//<INTEGER>RECURSOS DISPONIVEIS
+			//<PROCESSOS>PROCESSOS
+			//INT PROCESSOSTAM
+			//INT RECURSOSTAM
 			ArrayList<Integer> recursosDisponiveis=this.gerarArrayRecursosDisponiveis();
-			ArrayList<Processos> procesos=this.get_processos();
+			ArrayList<Processos> processos=this.get_processos();
 			int processosArrayTam=processos.size();
 			int recursosArrayTam=recursos.size();
 			boolean processoPodeRodar=true;
+			ArrayList<Integer> processosEmDeadLock=new ArrayList<>();
+			
+
 
 			for(int i=0;i<processosArrayTam;i++){		
 				for(int j=0;j<processosArrayTam;j++){		
 					processoPodeRodar=true;
 					if(recursosDisponiveis.get(j)<processos.get(i).get_recursos_requisitados().get(j)){
-						processoPodeRodar=false;
-						break;	
+						processosEmDeadLock.add(j);
+						//processoPodeRodar=false;
+					}else{
+						ArrayList<Integer> processosRecursosAlocados=this.retornaArrayAlocados(processos,j);
+						recursosDisponiveis=Utils.somarArrays(processosRecursosAlocados,recursosDisponiveis);
 					}
 				}
-				if (processoPodeRodar==true)
-					break;
 			}
-			return processoPodeRodar;
+			return processosEmDeadLock;
 			
 		}
 
@@ -98,8 +106,12 @@ public class SistemaOperacional extends Thread{
 	
 	public ArrayList<Integer> retornaArrayRequisitados(ArrayList<Processos> processos,int indice){
 		return processos.get(indice).get_recursos_requisitados();
-		
 	}
+	public ArrayList<Integer> retornaArrayAlocados(ArrayList<Processos> processos,int indice){
+		return processos.get(indice).get_recursos_alocados();
+	}
+
+
 	public void printarRecursos(){
 		ArrayList<Recursos> recursos=this.get_recursos();
 		int recursosSize=recursos.size();

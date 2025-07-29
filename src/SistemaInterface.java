@@ -140,8 +140,8 @@ public class SistemaInterface extends JFrame {
         }
     }
 
-    public void setDeadlockStatus(boolean emDeadlock, List<Integer> idsEmDeadlock) {
-        if (emDeadlock) {
+    public void setDeadlockStatus(List<Integer> idsEmDeadlock) {
+        if (idsEmDeadlock.size()>0) {
             labelDeadlock.setText("DEADLOCK DETECTADO: Processos " + idsEmDeadlock);
             labelDeadlock.setForeground(Color.RED);
         } else {

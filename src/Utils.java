@@ -1,4 +1,5 @@
 import java.util.concurrent.Semaphore;
+import java.util.ArrayList;
 
 public class Utils {
 
@@ -31,4 +32,13 @@ public class Utils {
 	public static void up(Semaphore semaforo,int count){
 		semaforo.release(count);
 	}
+
+	public static ArrayList<Integer> somarArrays(ArrayList<Integer> a,ArrayList<Integer> b){
+		ArrayList<Integer> resultado=new ArrayList<>();
+		for(int	i=0;i<a.size();i++){
+			resultado.add(a.get(i)+b.get(i));	
+		}
+		return resultado;
+	}
 }
+
