@@ -21,6 +21,7 @@ public class SistemaInterface extends JFrame {
     private final JTextArea areaLog;
     private final JLabel labelDeadlock;
     private final AddProcessoDialog addProcessoDialog = new AddProcessoDialog(this);
+    private final KillProcessoDialog killProcessoDialog = new KillProcessoDialog(this);
     private final DefaultTableModel modeloProcessos;
     private final DefaultTableModel modeloRecursos;
     private final JPanel painelMatrizVisual;
@@ -88,8 +89,14 @@ public class SistemaInterface extends JFrame {
         addProcessoButton.setPreferredSize(new Dimension(200, 30));
         addProcessoButton.addActionListener(e -> openAddProcessoDialog());
 
+        //eliminar processo
+        JButton killProcessoButton = new JButton("Matar Processo");
+        killProcessoButton.setPreferredSize(new Dimension(200, 30));
+        killProcessoButton.addActionListener(e -> openKillProcessoDialog());
+
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topPanel.add(addProcessoButton);
+        topPanel.add(killProcessoButton);
         add(topPanel, BorderLayout.NORTH);
 
         setVisible(true);
@@ -151,13 +158,13 @@ public class SistemaInterface extends JFrame {
         }
     }
 		
-		public void setDeadlockStatus(boolean emDeadlock){
-			if(emDeadlock){
-				labelDeadlock.setText("DEADLOCK DETECTADO");
-				labelDeadlock.setForeground(Color.RED);	
-				return;	
-			}
-		}
+    public void setDeadlockStatus(boolean emDeadlock){
+        if(emDeadlock){
+            labelDeadlock.setText("DEADLOCK DETECTADO");
+            labelDeadlock.setForeground(Color.RED);	
+            return;	
+        }
+    }
 
     public void addProcessoRow(int id, float tempo_solicitacao, float tempo_utilizacao) {
         DefaultTableModel model = (DefaultTableModel) tabelaProcessos.getModel();
@@ -178,6 +185,21 @@ public class SistemaInterface extends JFrame {
             novo.start();
 
             addLog("Processo P" + id + " criado e iniciado.");
+
+            addProcessoDialog.resetIdField();
+            addProcessoDialog.resetTempo_solicitacao_field();
+            addProcessoDialog.resetTempo_utilizacao_field();
+        }
+    }
+
+    public void openKillProcessoDialog() {
+        killProcessoDialog.setVisible(true);
+        if (killProcessoDialog.isConfirmed()) {
+            int id = killProcessoDialog.getId();
+
+            removeProcessoRow(id);
+
+            addLog("Processo P" + id + " foi morto.");
         }
     }
 
@@ -186,12 +208,33 @@ public class SistemaInterface extends JFrame {
         model.addRow(new Object[]{nome, quantidade, quantidade});
     }
 
-    public void atualizarMatrizVisual(int[][] matriz) {
-        painelMatrizVisual.removeAll(); 
-        ValorMatriz painel = new ValorMatriz(matriz);
-        painelMatrizVisual.add(painel, BorderLayout.CENTER);
+    public void removeProcessoRow(int id){
+        DefaultTableModel model = (DefaultTableModel) tabelaProcessos.getModel();
+        model.removeRow(id - 1);
+    }
+
+    public void atualizarMatrizes(  int[][] matrizAlocacao,  // C
+                                    int[][] matrizRequisicao, // R
+                                    int[] recursosTotais,     // E
+                                    int[] recursosDisponiveis,// A
+                                    List<Processos> processos   ) {
+        painelMatrizVisual.removeAll();
+    
+        int numRecursos = recursosTotais.length;
+
+        JPanel painelGrid = new JPanel(new GridLayout(2, 2, 10, 10));
+        painelGrid.add(new PainelMatriz("C - Recursos Alocados", matrizAlocacao, processos, numRecursos));
+        painelGrid.add(new PainelMatriz("R - Recursos Solicitados", matrizRequisicao, processos, numRecursos));
+        painelGrid.add(new PainelMatriz("E - Recursos Totais", recursosTotais, numRecursos));
+        painelGrid.add(new PainelMatriz("A - Recursos Disponíveis", recursosDisponiveis, numRecursos));
+
+        painelMatrizVisual.add(painelGrid, BorderLayout.CENTER);
         painelMatrizVisual.revalidate();
         painelMatrizVisual.repaint();
     }
-    
+
+    public SistemaOperacional getSistema() {
+        return sistema;
+    }
+
 }

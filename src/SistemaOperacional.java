@@ -24,14 +24,22 @@ public class SistemaOperacional extends Thread{
         System.out.println("thread so iniciada");
         while (true) {
             try {
-			int[][] matrizCR = combinarCReR(processos);
-			interfaceGrafica.atualizarMatrizVisual(matrizCR);
-			printMatriz(matrizCR);
+                int[][] C = gerarMatrizAlocados();
+                int[][] R = gerarMatrizRequisicoes();
+                int[] E = gerarVetorTotalRecursos();
+                int[] A = gerarVetorDisponiveis();
 
+                interfaceGrafica.atualizarMatrizes(C, R, E, A, processos);
+                
                 atualizarInterface();
+<<<<<<< HEAD
 								printarRecursos();
 								//ArrayList<Integer> processosEmDeadlock=retornarArrayIds(this.conferirDeadLock());
 								//interfaceGrafica.setDeadlockStatus(processosEmDeadlock);	
+=======
+                printarRecursos();
+                interfaceGrafica.setDeadlockStatus(this.conferirDeadLock());	
+>>>>>>> 88b5060bbac83dcb17a5ae1f71eed862d65b3dff
                 Thread.sleep(1000);
                 Utils.limparTela();
 
@@ -56,8 +64,16 @@ public class SistemaOperacional extends Thread{
     public void atualizarInterface() {
         interfaceGrafica.atualizarRecursos(recursos);
         interfaceGrafica.atualizarProcessos(processos);
-        interfaceGrafica.atualizarMatrizVisual(combinarCReR(processos));
+
+        // MATRIZES C, R, E, A
+        int[][] C = gerarMatrizAlocados();
+        int[][] R = gerarMatrizRequisicoes();
+        int[] E = gerarVetorTotalRecursos();
+        int[] A = gerarVetorDisponiveis();
+
+        interfaceGrafica.atualizarMatrizes(C, R, E, A, processos);
     }
+<<<<<<< HEAD
 		public ArrayList<Processos> conferirDeadLock(){
 			//gerando variaveis para o algoritmo
 			//<INTEGER>RECURSOS DISPONIVEIS
@@ -95,35 +111,62 @@ public class SistemaOperacional extends Thread{
 			}
 			
 
+=======
 
-		public ArrayList<Integer> gerarArrayRecursosDisponiveis(){
-			ArrayList <Integer> recursosDisponiveis=new ArrayList<>();
-			ArrayList<Recursos>	recursos=this.get_recursos();
-			int arrayRecursosTam=recursos.size();
-			for (int i=0;i<arrayRecursosTam;i++){
-				recursosDisponiveis.add(recursos.get(i).getDisponivel().availablePermits());
-			}
-			return recursosDisponiveis;
-		}
+	public ArrayList<Integer> conferirDeadLock() {
+        ArrayList<Integer> recursosDisponiveis = this.gerarArrayRecursosDisponiveis();
+        ArrayList<Processos> processos = this.get_processos();
+        int processosArrayTam = processos.size();
+        int recursosArrayTam = recursos.size(); // Certifique-se que `recursos` está acessível aqui
+        ArrayList<Integer> processosEmDeadLock = new ArrayList<>();
+
+        for (int i = 0; i < processosArrayTam; i++) {
+            boolean processoPodeRodar = true;
+>>>>>>> 88b5060bbac83dcb17a5ae1f71eed862d65b3dff
+
+            for (int j = 0; j < recursosArrayTam; j++) {
+                if (recursosDisponiveis.get(j) < processos.get(i).get_recursos_requisitados().get(j)) {
+                    processoPodeRodar = false;
+                    break;
+                }
+            }
+
+            if (processoPodeRodar) {
+                ArrayList<Integer> recursosAlocados = this.retornaArrayAlocados(processos, i);
+                recursosDisponiveis = Utils.somarArrays(recursosAlocados, recursosDisponiveis);
+            } else {
+                processosEmDeadLock.add(i);
+            }
+        }
+
+        return processosEmDeadLock;
+    }
+
+    public ArrayList<Integer> gerarArrayRecursosDisponiveis(){
+        ArrayList <Integer> recursosDisponiveis=new ArrayList<>();
+        ArrayList<Recursos>	recursos=this.get_recursos();
+        int arrayRecursosTam=recursos.size();
+        for (int i=0;i<arrayRecursosTam;i++){
+            recursosDisponiveis.add(recursos.get(i).getDisponivel().availablePermits());
+        }
+        return recursosDisponiveis;
+    }
 		
-		public int[][] gerarMatrizRecursosAlocados(){
-			ArrayList<Processos> processos=this.get_processos();			
-			ArrayList<Recursos> recursos=this.get_recursos();			
-			int processosArrayTam=processos.size();
-			int recursosArrayTam=recursos.size();
+    public int[][] gerarMatrizRecursosAlocados(){
+        ArrayList<Processos> processos=this.get_processos();			
+        ArrayList<Recursos> recursos=this.get_recursos();			
+        int processosArrayTam=processos.size();
+        int recursosArrayTam=recursos.size();
 
-			int[][] matrizRecursosAlocados=new int[processosArrayTam][recursosArrayTam];
-			for(int i=0;i<processosArrayTam;i++){
-				for(int j=0;j<processosArrayTam;j++){
-					matrizRecursosAlocados[i][j]=processos.get(i).get_recursos_requisitados().get(j);
-				}
-			}
-			return matrizRecursosAlocados;
-		}
-			
+        int[][] matrizRecursosAlocados=new int[processosArrayTam][recursosArrayTam];
+        for(int i=0;i<processosArrayTam;i++){
+            for(int j=0;j<processosArrayTam;j++){
+                matrizRecursosAlocados[i][j]=processos.get(i).get_recursos_requisitados().get(j);
+            }
+        }
+        return matrizRecursosAlocados;
+    }
 
-	
-	
 	public ArrayList<Integer> retornaArrayRequisitados(ArrayList<Processos> processos,int indice){
 		return processos.get(indice).get_recursos_requisitados();
 
@@ -131,7 +174,6 @@ public class SistemaOperacional extends Thread{
 	public ArrayList<Integer> retornaArrayAlocados(ArrayList<Processos> processos,int indice){
 		return processos.get(indice).get_recursos_alocados();
 	}
-
 
 	public void printarRecursos(){
 		ArrayList<Recursos> recursos=this.get_recursos();
@@ -251,5 +293,53 @@ public class SistemaOperacional extends Thread{
         for (Processos p : processos) {
             p.printar_recursos_requisitados();
         }
+    }
+
+    public int[][] gerarMatrizAlocados() {
+        int n = processos.size();
+        int m = recursos.size();
+        int[][] matriz = new int[n][m];
+
+        for (int i = 0; i < n; i++) {
+            ArrayList<Integer> alocados = processos.get(i).get_recursos_alocados();
+            for (int j = 0; j < m; j++) {
+                matriz[i][j] = alocados.get(j);
+            }
+        }
+
+        return matriz;
+    }
+
+    public int[][] gerarMatrizRequisicoes() {
+        int n = processos.size();
+        int m = recursos.size();
+        int[][] matriz = new int[n][m];
+
+        for (int i = 0; i < n; i++) {
+            ArrayList<Integer> requisitados = processos.get(i).get_recursos_requisitados();
+            for (int j = 0; j < m; j++) {
+                matriz[i][j] = requisitados.get(j);
+            }
+        }
+
+        return matriz;
+    }
+
+    public int[] gerarVetorTotalRecursos() {
+        int m = recursos.size();
+        int[] vetor = new int[m];
+        for (int i = 0; i < m; i++) {
+            vetor[i] = recursos.get(i).getTotal();
+        }
+        return vetor;
+    }
+
+    public int[] gerarVetorDisponiveis() {
+        int m = recursos.size();
+        int[] vetor = new int[m];
+        for (int i = 0; i < m; i++) {
+            vetor[i] = recursos.get(i).getDisponivel().availablePermits();
+        }
+        return vetor;
     }
 }
