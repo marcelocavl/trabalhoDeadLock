@@ -40,54 +40,55 @@ public class KillProcessoDialog extends JDialog{
         addEliminarButton.setPreferredSize(new Dimension(150, 30));
         botaoPanel.add(addEliminarButton);
 
-addEliminarButton.addActionListener(e -> {
-    String texto = idField.getText().trim();	
+        addEliminarButton.addActionListener(e -> {
+            String texto = idField.getText().trim();	
+            //System.out.println("Texto digitado: [" + texto + "]");
 
-    if (texto.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Digite um ID de processo.", "Erro", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+            if (texto.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Digite um ID de processo.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-    int idInput;
-    try {
-        idInput = Integer.parseInt(texto);
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "O ID deve ser um número inteiro.", "Erro", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+            int idInput;
+            try {
+                idInput = Integer.parseInt(texto);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "O ID deve ser um número inteiro.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-    Processos processo = null;
-    try {
-        processo = parent.getSistema().get_processos().get(idInput - 1);
-    } catch (IndexOutOfBoundsException ex) {
-        JOptionPane.showMessageDialog(this, "ID de processo inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+            Processos processo = null;
+            try {
+                //System.out.println("ID lido: " + idInput);
+                //System.out.println("Tamanho da lista de processos: " + parent.getSistema().get_processos().size());
+                processo = parent.getSistema().get_processos().get(idInput - 1);
+            } catch (IndexOutOfBoundsException ex) {
+                JOptionPane.showMessageDialog(this, "ID de processo inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-    if (processo == null || !processo.isAlive()) {
-        JOptionPane.showMessageDialog(this, "O processo com esse ID não está ativo.", "Erro", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+            if (processo == null || !processo.isAlive()) {
+                JOptionPane.showMessageDialog(this, "O processo com esse ID não está ativo.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-    id = idInput;
-    processo.interrupt();
-    confirmado = true;
+            id = idInput;
+            processo.interrupt();
+            confirmado = true;
 
-    idField.setText("");
-    idField.requestFocus();
+            idField.setText("");
+            idField.requestFocus();
 
-    this.setVisible(false);
-});
+            this.setVisible(false);
+        });
 
 
- setLayout(new BorderLayout(10, 10));
+        setLayout(new BorderLayout(10, 10));
         add(camposPanel, BorderLayout.CENTER);
         add(botaoPanel, BorderLayout.SOUTH);
 
         setSize(400, 250);
         setLocationRelativeTo(parent);
-
-
     }
 
     private boolean validarCampos() {
@@ -99,6 +100,6 @@ addEliminarButton.addActionListener(e -> {
     }
 
     public int getId() {
-        return Integer.parseInt(idField.getText().trim());
+        return this.id;
     }
 }
