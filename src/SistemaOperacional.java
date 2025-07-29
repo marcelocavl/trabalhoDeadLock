@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.JTextField;
-
 //CLASSE SISTEMA OPERACIONAL
 public class SistemaOperacional extends Thread{
 	//ATRIBUTOS
@@ -33,14 +31,14 @@ public class SistemaOperacional extends Thread{
                 interfaceGrafica.atualizarMatrizes(C, R, E, A, processos);
                 
                 atualizarInterface();
-								printarRecursos();
-								//ArrayList<Integer> processosEmDeadlock=retornarArrayIds(this.conferirDeadLock());
-								//interfaceGrafica.setDeadlockStatus(processosEmDeadlock);	
-								this.conferirEPrintarDeadLock();
+                printarRecursos();
+                //ArrayList<Integer> processosEmDeadlock=retornarArrayIds(this.conferirDeadLock());
+                //interfaceGrafica.setDeadlockStatus(processosEmDeadlock);	
+                this.conferirEPrintarDeadLock();
                 //printarRecursos();
                 //interfaceGrafica.setDeadlockStatus(this.conferirDeadLock());	
-               Thread.sleep(1000);
-								System.out.println(this.getInterface().getIdField());
+                Thread.sleep(1000);
+				//System.out.println(this.getInterface().getIdField());
                 Utils.limparTela();
 
             } catch (InterruptedException e) {
@@ -49,9 +47,6 @@ public class SistemaOperacional extends Thread{
         }
     }
 
-		public SistemaInterface getInterface(){		
-			return interfaceGrafica;
-		}
 
 		public ArrayList<Integer> retornarArrayIds(ArrayList<Processos> processos){
 			ArrayList<Integer> arrayIds=new ArrayList<>();
