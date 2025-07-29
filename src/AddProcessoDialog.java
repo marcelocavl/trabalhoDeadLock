@@ -80,4 +80,18 @@ public class AddProcessoDialog extends JDialog {
     public float getTempoUtilizacao() {
         return Float.parseFloat(tempo_utilizacao_field.getText().trim());
     }
+
+    public void resetIdField() {
+        this.idField.setText("");
+    }
+
+    public void resetTempo_solicitacao_field() {
+        this.tempo_solicitacao_field.setText("");
+    }
+
+    public void resetTempo_utilizacao_field() {
+        this.tempo_utilizacao_field.setText("");
+    }
+
+
 }

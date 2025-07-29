@@ -11,8 +11,8 @@ public class Processos extends Thread {
 	private final float tempo_solicitacao;
     private final float tempo_utilizacao;
     private final SistemaOperacional sistema;
-		private ArrayList<Integer> recursosAlocados;
-		private ArrayList<Integer> recursosRequisitados;
+	private ArrayList<Integer> recursosAlocados;
+	private ArrayList<Integer> recursosRequisitados;
 
     private String statusAtual = "Dormindo";
 
@@ -21,8 +21,8 @@ public class Processos extends Thread {
         this.tempo_solicitacao = tempo_solicitacao;
         this.tempo_utilizacao = tempo_utilizacao;
         this.sistema = sistema;
-				this.recursosAlocados=new ArrayList<>();
-				this.recursosRequisitados=new ArrayList<>();
+		this.recursosAlocados=new ArrayList<>();
+		this.recursosRequisitados=new ArrayList<>();
 				
     }
 
@@ -59,28 +59,28 @@ public class Processos extends Thread {
         this.statusAtual = status;
     }
 
-		public int get_recursos_size(){
-			return this.get_sistema_operacional().get_recursos_size();
-		}
+	public int get_recursos_size(){
+		return this.get_sistema_operacional().get_recursos_size();
+	}
 
-		public void inicializarVetores(){
-			this.inicializarVetorRecursosAlocados();
-			this.inicializarVetorRecursosRequisitados();
-		}
+	public void inicializarVetores(){
+		this.inicializarVetorRecursosAlocados();
+		this.inicializarVetorRecursosRequisitados();
+	}
 
-		public void inicializarVetorRecursosAlocados(){	
-			int tamVetorRecursosSO=this.get_sistema_operacional().get_recursos_size();
-			for(int i=0;i<tamVetorRecursosSO;i++){	
-				this.get_recursos_alocados().add(0);
-			}
+	public void inicializarVetorRecursosAlocados(){	
+		int tamVetorRecursosSO=this.get_sistema_operacional().get_recursos_size();
+		for(int i=0;i<tamVetorRecursosSO;i++){	
+			this.get_recursos_alocados().add(0);
 		}
+	}
 
-		public void inicializarVetorRecursosRequisitados(){	
-			int tamVetorRecursosSO=this.get_sistema_operacional().get_recursos_size();
-			for(int i=0;i<tamVetorRecursosSO;i++){	
-				this.get_recursos_requisitados().add(0);
-			}
+	public void inicializarVetorRecursosRequisitados(){	
+		int tamVetorRecursosSO=this.get_sistema_operacional().get_recursos_size();
+		for(int i=0;i<tamVetorRecursosSO;i++){	
+			this.get_recursos_requisitados().add(0);
 		}
+	}
 /*
 			public void inicializarVetorRecursosAlocados(){	
 			ArrayList<Recursos> vetorRecursosDisponi
@@ -91,56 +91,56 @@ public class Processos extends Thread {
 			}
 		}
 */		
-		public int getRecursosSOArraySize(){
-			SistemaOperacional sistemaOperacional=this.get_sistema_operacional();	
-			return sistemaOperacional.get_recursos().size();	
+	public int getRecursosSOArraySize(){
+		SistemaOperacional sistemaOperacional=this.get_sistema_operacional();	
+		return sistemaOperacional.get_recursos().size();	
+	}
+
+	public ArrayList<Recursos> getRecursosSO(){	
+		SistemaOperacional sistemaOperacional=this.get_sistema_operacional();			
+		return sistemaOperacional.get_recursos();
+	}
+
+
+	public void incrementa_vetor_recursos_alocados(int indice){		
+		ArrayList<Integer> recursos=this.get_recursos_alocados();
+		SistemaOperacional so=this.get_sistema_operacional();
+		Integer recurso=recursos.get(indice);
+		if(recurso++<so.getRecursoQuantidadeTotal(indice)){
+			recursos.set(indice,recurso);
 		}
-	
-		public ArrayList<Recursos> getRecursosSO(){	
-			SistemaOperacional sistemaOperacional=this.get_sistema_operacional();			
-			return sistemaOperacional.get_recursos();
+	}
+
+
+	public void decrementa_vetor_recursos_alocados(int indice){		
+		ArrayList<Integer> recursos=this.get_recursos_alocados();
+		SistemaOperacional so=this.get_sistema_operacional();
+		Integer recurso=recursos.get(indice);
+			recurso--;
+		//if(recurso--<so.getRecursoQuantidadeTotal(indice)){
+			recursos.set(indice,recurso);
+		//}
+	}
+
+	public void decrementa_vetor_recursos_requisitados(int indice){		
+		ArrayList<Integer> recursos=this.get_recursos_requisitados();
+		SistemaOperacional so=this.get_sistema_operacional();
+		Integer recurso=recursos.get(indice);
+			recurso--;
+		//if(recurso--<so.getRecursoQuantidadeTotal(indice)){
+			recursos.set(indice,recurso);
+		//}
+	}
+
+
+
+	public void incrementa_vetor_recursos_requisitados(int indice){		
+		ArrayList<Integer> recursos=this.get_recursos_requisitados();
+		SistemaOperacional so=this.get_sistema_operacional();
+		Integer recurso=recursos.get(indice);
+		if(recurso++<so.getRecursoQuantidadeTotal(indice)){
+			recursos.set(indice,recurso);
 		}
-
-
-		public void incrementa_vetor_recursos_alocados(int indice){		
-			ArrayList<Integer> recursos=this.get_recursos_alocados();
-			SistemaOperacional so=this.get_sistema_operacional();
-			Integer recurso=recursos.get(indice);
-			if(recurso++<so.getRecursoQuantidadeTotal(indice)){
-				recursos.set(indice,recurso);
-			}
-		}
-
-
-		public void decrementa_vetor_recursos_alocados(int indice){		
-			ArrayList<Integer> recursos=this.get_recursos_alocados();
-			SistemaOperacional so=this.get_sistema_operacional();
-			Integer recurso=recursos.get(indice);
-				recurso--;
-			//if(recurso--<so.getRecursoQuantidadeTotal(indice)){
-				recursos.set(indice,recurso);
-			//}
-		}
-
-		public void decrementa_vetor_recursos_requisitados(int indice){		
-			ArrayList<Integer> recursos=this.get_recursos_requisitados();
-			SistemaOperacional so=this.get_sistema_operacional();
-			Integer recurso=recursos.get(indice);
-				recurso--;
-			//if(recurso--<so.getRecursoQuantidadeTotal(indice)){
-				recursos.set(indice,recurso);
-			//}
-		}
-
-
-
-		public void incrementa_vetor_recursos_requisitados(int indice){		
-			ArrayList<Integer> recursos=this.get_recursos_requisitados();
-			SistemaOperacional so=this.get_sistema_operacional();
-			Integer recurso=recursos.get(indice);
-			if(recurso++<so.getRecursoQuantidadeTotal(indice)){
-				recursos.set(indice,recurso);
-			}
 
 /*
 				int recurso=this.get_recursos_requisitados().get(indice);
@@ -255,14 +255,14 @@ public class Processos extends Thread {
 				this.inicializarVetores();
         while (true) {
             try {		
-							int indiceAleatorio=geraNumeroAleatorio();
-							esperandoSolicitar();
-							solicitar(indiceAleatorio);
-							Thread executar=new Thread(()-> {
-							executando();
-							liberarRecurso(indiceAleatorio);
-							});
-							executar.start();
+				int indiceAleatorio=geraNumeroAleatorio();
+				esperandoSolicitar();
+				solicitar(indiceAleatorio);
+				Thread executar=new Thread(()-> {
+					executando();
+					liberarRecurso(indiceAleatorio);
+				});
+				executar.start();
 														
 /*
 	               setStatus("Dormindo");
@@ -302,11 +302,16 @@ public class Processos extends Thread {
                     }
                 }
 */
-            } catch (Exception e) {
-                break;
-            }
+            // } catch (InterruptedException e) {
+			// 	Thread.currentThread().interrupt();
+            //     break;
+            } catch (Exception e){
+				break;
+			}
         }
     }
 
-	
+    public int getProcesso_id() {
+        return processo_id;
+    }
 }
