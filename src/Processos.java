@@ -258,27 +258,14 @@ public class Processos extends Thread {
 				this.inicializarVetores();
         while (true) {
             try {		
-<<<<<<< HEAD
 							int indiceAleatorio=geraNumeroAleatorio();
 							esperandoSolicitar();
-							this.sistema.conferirEPrintarDeadLock();
 							solicitar(indiceAleatorio);
 							Thread executar=new Thread(()-> {
 							executando();
 							liberarRecurso(indiceAleatorio);
 							});
 							executar.start();
-=======
-				int indiceAleatorio=geraNumeroAleatorio();
-				esperandoSolicitar();
-				solicitar(indiceAleatorio);
-				Thread executar=new Thread(()-> {
-					executando();
-					liberarRecurso(indiceAleatorio);
-				});
-				executar.start();
->>>>>>> 88b5060bbac83dcb17a5ae1f71eed862d65b3dff
-														
 /*
 	               setStatus("Dormindo");
                 sistema.getInterface().addLog("Processo " + processo_id + " está dormindo.");

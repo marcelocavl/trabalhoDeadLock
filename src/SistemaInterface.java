@@ -192,17 +192,36 @@ public class SistemaInterface extends JFrame {
         }
     }
 
+public void openKillProcessoDialog() {
+    killProcessoDialog.setVisible(true);
+
+    if (killProcessoDialog.isConfirmed()) {
+        try {
+            int id = killProcessoDialog.getId();
+            sistema.processoMatar(id);	
+            removeProcessoRow(id);
+            addLog("Processo P" + id + " foi morto.");
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "ID inválido inserido.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
+
+
+/*
     public void openKillProcessoDialog() {
+
         killProcessoDialog.setVisible(true);
         if (killProcessoDialog.isConfirmed()) {
             int id = killProcessoDialog.getId();
-
+						SistemaOperacional so=this.getSistema();
+						so.processoMatar(id);	
             removeProcessoRow(id);
-
             addLog("Processo P" + id + " foi morto.");
         }
     }
 
+*/
     public void addRecursoRow(String nome, int quantidade) {
         DefaultTableModel model = (DefaultTableModel) tabelaRecursos.getModel();
         model.addRow(new Object[]{nome, quantidade, quantidade});

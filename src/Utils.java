@@ -20,7 +20,9 @@ public class Utils {
 		try{
 			semaforo.acquire();
 		} catch(InterruptedException e){
-            e.printStackTrace();
+ 				System.out.println("Thread interrompida ao tentar adquirir o semáforo.");
+        Thread.currentThread().interrupt(); // boa prática: repropaga a interrupção
+
 		}
 	}
 

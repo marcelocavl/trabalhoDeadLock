@@ -15,6 +15,11 @@ public class KillProcessoDialog extends JDialog{
     private JTextField idField;
     private int id;
     private boolean confirmado = false;
+
+
+		public JTextField getIdField(){
+			return idField;	
+		}
     
     public KillProcessoDialog(SistemaInterface parent) {
         super(parent, "Eliminar Processo", true);
@@ -35,27 +40,54 @@ public class KillProcessoDialog extends JDialog{
         addEliminarButton.setPreferredSize(new Dimension(150, 30));
         botaoPanel.add(addEliminarButton);
 
-        addEliminarButton.addActionListener(e -> {
-            if (validarCampos()) {
-                id = Integer.parseInt(idField.getText());
-                (parent.getSistema().get_processos().get(id - 1)).interrupt();
-                confirmado = true;
+addEliminarButton.addActionListener(e -> {
+    String texto = idField.getText().trim();	
 
-                idField.setText("");
-                idField.requestFocus();
+    if (texto.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Digite um ID de processo.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-                this.setVisible(false);
-            } else {
-                JOptionPane.showMessageDialog(this, "Preencha todos os campos corretamente.", "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        });
+    int idInput;
+    try {
+        idInput = Integer.parseInt(texto);
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, "O ID deve ser um número inteiro.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-        setLayout(new BorderLayout(10, 10));
+    Processos processo = null;
+    try {
+        processo = parent.getSistema().get_processos().get(idInput - 1);
+    } catch (IndexOutOfBoundsException ex) {
+        JOptionPane.showMessageDialog(this, "ID de processo inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    if (processo == null || !processo.isAlive()) {
+        JOptionPane.showMessageDialog(this, "O processo com esse ID não está ativo.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    id = idInput;
+    processo.interrupt();
+    confirmado = true;
+
+    idField.setText("");
+    idField.requestFocus();
+
+    this.setVisible(false);
+});
+
+
+ setLayout(new BorderLayout(10, 10));
         add(camposPanel, BorderLayout.CENTER);
         add(botaoPanel, BorderLayout.SOUTH);
 
         setSize(400, 250);
         setLocationRelativeTo(parent);
+
+
     }
 
     private boolean validarCampos() {
