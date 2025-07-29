@@ -30,8 +30,8 @@ public class SistemaOperacional extends Thread{
 
                 atualizarInterface();
 								printarRecursos();
-								ArrayList<Integer> processosEmDeadlock=retornarArrayIds(this.conferirDeadLock());
-								interfaceGrafica.setDeadlockStatus(processosEmDeadlock);	
+								//ArrayList<Integer> processosEmDeadlock=retornarArrayIds(this.conferirDeadLock());
+								//interfaceGrafica.setDeadlockStatus(processosEmDeadlock);	
                 Thread.sleep(1000);
                 Utils.limparTela();
 
@@ -47,6 +47,10 @@ public class SistemaOperacional extends Thread{
 				arrayIds.add(processos.get(i).get_processo_id());	
 			}
 			return arrayIds;
+		}
+		public void conferirEPrintarDeadLock(){			
+			ArrayList<Integer> processosEmDeadlock=retornarArrayIds(this.conferirDeadLock());
+			interfaceGrafica.setDeadlockStatus(processosEmDeadlock);	
 		}
 
     public void atualizarInterface() {

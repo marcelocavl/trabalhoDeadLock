@@ -228,15 +228,18 @@ public class Processos extends Thread {
 				this.alocaRecurso(indice);
 				this.enviaLogSolicitacao(sistemaOperacional.getRecurso(indice));		
 				this.incrementa_vetor_recursos_alocados(indice);
+				this.sistema.conferirEPrintarDeadLock();
 				Utils.up(Semaforos.mutexRecursos);
 			}else{
 				this.enviaLogBloqueado(sistemaOperacional.getRecurso(indice));
 				//this.incrementaVetorRequisicao(indice);
 				this.incrementa_vetor_recursos_requisitados(indice);
+				this.sistema.conferirEPrintarDeadLock();
 				Utils.up(Semaforos.mutexRecursos);
 				this.alocaRecurso(indice);
 				this.enviaLogSolicitacao(sistemaOperacional.getRecurso(indice));		
 				this.incrementa_vetor_recursos_alocados(indice);
+				this.sistema.conferirEPrintarDeadLock();
 			}
 		}
 
@@ -257,6 +260,7 @@ public class Processos extends Thread {
             try {		
 							int indiceAleatorio=geraNumeroAleatorio();
 							esperandoSolicitar();
+							this.sistema.conferirEPrintarDeadLock();
 							solicitar(indiceAleatorio);
 							Thread executar=new Thread(()-> {
 							executando();
