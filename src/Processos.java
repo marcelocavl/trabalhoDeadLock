@@ -185,15 +185,7 @@ public class Processos extends Thread {
 		}
 
 		public void executando(){
-			try{	
-			boolean loop=true;
-			while(loop){
-				Thread.sleep((long) (this.tempo_utilizacao * 1000));	
-				if(this.getState()!=Thread.State.WAITING){
-					loop=false;	
-				}
-			}
-			}catch(Exception e){}
+			
 		}
 
 
@@ -255,63 +247,32 @@ public class Processos extends Thread {
 
 			
 		public void run() {
-				this.inicializarVetores();
-        while (true) {
-            try {		
-							int indiceAleatorio=geraNumeroAleatorio();
-							esperandoSolicitar();
-							solicitar(indiceAleatorio);
-							Thread executar=new Thread(()-> {
-							executando();
-							liberarRecurso(indiceAleatorio);
-							});
-							executar.start();
-/*
-	               setStatus("Dormindo");
-                sistema.getInterface().addLog("Processo " + processo_id + " está dormindo.");
-                sistema.atualizarInterface();
-                Thread.sleep((long) (tempo_solicitacao * 1000));
-
-                //Recursos recurso = sistema.sortearRecursoAleatorio();
-								int indice_aleatorio=sistema.sortearNumero();
-								Recursos recurso= sistema.retornarRecursoPorIndice(indice_aleatorio);
-
-                synchronized (recurso) {
-                    if (recurso.getDisponivel() > 0) {	
-												this.incrementa_vetor_recurso(indice_aleatorio);	
-												this.get_sistema_operacional().gerar_matriz_recursos_alocados();
-                        setStatus("Rodando");
-                        sistema.atualizarInterface();
-                        recurso.alocar();
-                        sistema.getInterface().addLog("Processo " + processo_id + " está utilizando recurso " + recurso.getNome());
-
-                        Thread.sleep((long) (tempo_utilizacao * 1000));
-
-                       	recurso.liberar();
-                        sistema.getInterface().addLog("Processo " + processo_id + " liberou recurso " + recurso.getNome());
-                    } else {
-                        setStatus("Bloqueado");
-												this.incrementa_vetor_recursos_requisitados();
-                        sistema.atualizarInterface();
-                        sistema.getInterface().addLog("Processo " + processo_id + " está BLOQUEADO aguardando recurso " + recurso.getNome());
-
-                        while (recurso.getDisponivel() == 0) {
-                            Thread.sleep(1000);
-                        }
-
-                        setStatus("Rodando");
-                        sistema.atualizarInterface();
-                    }
-                }
-*/
-            // } catch (InterruptedException e) {
-			// 	Thread.currentThread().interrupt();
-            //     break;
-            } catch (Exception e){
-				break;
+			this.inicializarVetores();
+			while (true) {
+				try {		
+					int indiceAleatorio=geraNumeroAleatorio();
+					esperandoSolicitar();
+					solicitar(indiceAleatorio);
+					Thread executar=new Thread(()-> {
+						try{	
+							boolean loop=true;
+							while(loop){
+								Thread.sleep((long) (this.tempo_utilizacao * 1000));	
+								if(getState()!=Thread.State.WAITING){
+									loop=false;	
+								}
+							}
+						} catch(InterruptedException e){
+							Thread.currentThread().interrupt();
+						}
+						liberarRecurso(indiceAleatorio);
+					});
+					executar.start();
+				} catch (Exception e){
+					break;
+				}
 			}
-        }
-    }
+    	}
 
     public int getProcesso_id() {
         return processo_id;

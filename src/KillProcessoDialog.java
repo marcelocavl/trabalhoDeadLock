@@ -3,6 +3,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,10 +18,9 @@ public class KillProcessoDialog extends JDialog{
     private int id;
     private boolean confirmado = false;
 
-
-		public JTextField getIdField(){
-			return idField;	
-		}
+    public JTextField getIdField(){
+        return idField;	
+    }
     
     public KillProcessoDialog(SistemaInterface parent) {
         super(parent, "Eliminar Processo", true);
@@ -57,11 +58,19 @@ public class KillProcessoDialog extends JDialog{
                 return;
             }
 
+            id = idInput;
+
             Processos processo = null;
+            List<Processos> listaProcessosOriginal = parent.getSistema().get_processos();
+            List<Processos> listaProcessos = new ArrayList<>(listaProcessosOriginal);
+
             try {
-                //System.out.println("ID lido: " + idInput);
-                //System.out.println("Tamanho da lista de processos: " + parent.getSistema().get_processos().size());
-                processo = parent.getSistema().get_processos().get(idInput - 1);
+                for (Processos p : listaProcessos) {
+                    if (p != null && id == p.get_processo_id()) {
+                        processo = p;
+                        break;
+                    }
+                }
             } catch (IndexOutOfBoundsException ex) {
                 JOptionPane.showMessageDialog(this, "ID de processo inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -72,7 +81,6 @@ public class KillProcessoDialog extends JDialog{
                 return;
             }
 
-            id = idInput;
             processo.interrupt();
             confirmado = true;
 

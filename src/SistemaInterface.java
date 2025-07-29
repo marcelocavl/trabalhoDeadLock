@@ -192,36 +192,23 @@ public class SistemaInterface extends JFrame {
         }
     }
 
-public void openKillProcessoDialog() {
-    killProcessoDialog.setVisible(true);
-
-    if (killProcessoDialog.isConfirmed()) {
-        try {
-            int id = killProcessoDialog.getId();
-            sistema.processoMatar(id);	
-            removeProcessoRow(id);
-            addLog("Processo P" + id + " foi morto.");
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "ID inválido inserido.", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-}
-
-
-/*
     public void openKillProcessoDialog() {
-
         killProcessoDialog.setVisible(true);
+
         if (killProcessoDialog.isConfirmed()) {
-            int id = killProcessoDialog.getId();
-						SistemaOperacional so=this.getSistema();
-						so.processoMatar(id);	
-            removeProcessoRow(id);
-            addLog("Processo P" + id + " foi morto.");
+            try {
+                int id = killProcessoDialog.getId();
+                System.out.println("ID do diálogo: " + killProcessoDialog.getId());
+                sistema.processoMatar(id);	
+                removeProcessoRow(id);
+                sistema.removerProcessoPorId(id);
+                addLog("Processo P" + id + " foi morto.");
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "ID inválido inserido.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
-*/
     public void addRecursoRow(String nome, int quantidade) {
         DefaultTableModel model = (DefaultTableModel) tabelaRecursos.getModel();
         model.addRow(new Object[]{nome, quantidade, quantidade});
@@ -229,7 +216,17 @@ public void openKillProcessoDialog() {
 
     public void removeProcessoRow(int id){
         DefaultTableModel model = (DefaultTableModel) tabelaProcessos.getModel();
-        model.removeRow(id - 1);
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String valor = model.getValueAt(i, 0).toString();
+            if (valor.startsWith("P")) {
+                valor = valor.substring(1);
+            }
+            int idTabela = Integer.parseInt(valor);
+            if (idTabela == id) {
+                model.removeRow(i);
+                break;
+            }
+        }
     }
 
     public void atualizarMatrizes(  int[][] matrizAlocacao,  // C

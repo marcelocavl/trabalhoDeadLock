@@ -32,13 +32,8 @@ public class SistemaOperacional extends Thread{
                 
                 atualizarInterface();
                 printarRecursos();
-                //ArrayList<Integer> processosEmDeadlock=retornarArrayIds(this.conferirDeadLock());
-                //interfaceGrafica.setDeadlockStatus(processosEmDeadlock);	
                 this.conferirEPrintarDeadLock();
-                //printarRecursos();
-                //interfaceGrafica.setDeadlockStatus(this.conferirDeadLock());	
                 Thread.sleep(1000);
-				//System.out.println(this.getInterface().getIdField());
                 Utils.limparTela();
 
             } catch (InterruptedException e) {
@@ -259,6 +254,14 @@ public class SistemaOperacional extends Thread{
 
     public void add_processos(Processos p) {
         processos.add(p);
+    }
+
+    // REMOVE
+    public void removerProcessoPorId(int id) {
+        Processos processoAlvo = procurarProcessoPorId(id);
+        if (processoAlvo != null) {
+            processos.remove(processoAlvo);
+        }
     }
 
     // Verificações
